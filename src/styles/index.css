@@ -1,0 +1,772 @@
+/* ============================================
+   磁贴式个人主页 — 全局样式
+   ============================================ */
+
+/* CSS 变量 — 从 siteConfig 的 theme 映射 */
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #0f1428;
+  --fog-blue: #7eb8d4;
+  --frost-white: #e8edf2;
+  --soft-pink: #d4a0b9;
+  --electric-cyan: #00f0ff;
+  --tile-bg: rgba(255, 255, 255, 0.08);
+  --tile-border: rgba(255, 255, 255, 0.12);
+  --tile-blur: 20px;
+  --tile-radius: 16px;
+  --grid-gap: 16px;
+  --max-width: 1200px;
+  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-handwriting: 'Ma Shan Zheng', cursive;
+}
+
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--frost-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--electric-cyan);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* ============ 粒子背景 ============ */
+.particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============ 主容器 ============ */
+.homepage-container {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 40px 20px 20px;
+}
+
+/* ============ 磁贴网格 ============ */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--grid-gap);
+  width: 100%;
+}
+
+/* ============ 磁贴基础样式 ============ */
+.tile {
+  background: var(--tile-bg);
+  backdrop-filter: blur(var(--tile-blur));
+  -webkit-backdrop-filter: blur(var(--tile-blur));
+  border: 1px solid var(--tile-border);
+  border-radius: var(--tile-radius);
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--tile-radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 240, 255, 0.1),
+    0 0 0 1px rgba(0, 240, 255, 0.1);
+}
+
+/* ============ 磁贴尺寸 ============ */
+.tile-3x2 { grid-column: span 3; grid-row: span 2; }
+.tile-1x1 { grid-column: span 1; grid-row: span 1; }
+.tile-2x1 { grid-column: span 2; grid-row: span 1; }
+.tile-4x2 { grid-column: span 4; grid-row: span 2; }
+.tile-2x2 { grid-column: span 2; grid-row: span 2; }
+.tile-6x1 { grid-column: span 6; grid-row: span 1; }
+.tile-1x2 { grid-column: span 1; grid-row: span 2; }
+
+/* ============ 磁贴 A — 头像 & 名字 ============ */
+.tile-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid var(--tile-border);
+  background: var(--bg-secondary);
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid var(--bg-primary);
+}
+
+.status-dot.online {
+  background: #00ff88;
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.status-dot.offline {
+  background: #888;
+}
+
+.profile-name {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--frost-white);
+}
+
+.profile-id {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--fog-blue);
+  opacity: 0.8;
+}
+
+.profile-signature {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--frost-white);
+  opacity: 0.4;
+  font-style: italic;
+  max-width: 240px;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+/* ============ 磁贴 B — 状态 ============ */
+.tile-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.status-number {
+  font-family: var(--font-mono);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--electric-cyan);
+  line-height: 1;
+}
+
+.status-label {
+  font-size: 0.8rem;
+  color: var(--fog-blue);
+  opacity: 0.7;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ============ 磁贴 C — 情绪气象 ============ */
+.tile-mood {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.mood-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.mood-emoji {
+  font-size: 1.4rem;
+}
+
+.mood-weather {
+  color: var(--frost-white);
+  font-weight: 500;
+}
+
+.mood-text {
+  font-family: var(--font-handwriting);
+  font-size: 0.95rem;
+  color: var(--soft-pink);
+  opacity: 0.9;
+  padding-left: 4px;
+}
+
+/* ============ 磁贴 D — 关于我 ============ */
+.tile-about {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tile-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.tile-title h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--frost-white);
+}
+
+.tile-title span {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--fog-blue);
+  opacity: 0.5;
+}
+
+.tile-divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--electric-cyan), transparent);
+  border: none;
+  margin: 0;
+}
+
+.about-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.about-list li {
+  font-size: 0.88rem;
+  color: var(--frost-white);
+  opacity: 0.75;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.about-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--electric-cyan);
+  opacity: 0.6;
+}
+
+.about-quote {
+  font-family: var(--font-handwriting);
+  font-size: 1rem;
+  color: var(--electric-cyan);
+  opacity: 0.85;
+  line-height: 1.8;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ============ 磁贴 E — 标签墙 ============ */
+.tile-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  transform: scale(1.05);
+}
+
+.tag-cyan {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+  color: var(--electric-cyan);
+}
+
+.tag-pink {
+  background: rgba(212, 160, 185, 0.1);
+  border-color: rgba(212, 160, 185, 0.3);
+  color: var(--soft-pink);
+}
+
+.tag-blue {
+  background: rgba(126, 184, 212, 0.1);
+  border-color: rgba(126, 184, 212, 0.3);
+  color: var(--fog-blue);
+}
+
+.tag-purple {
+  background: rgba(160, 120, 210, 0.1);
+  border-color: rgba(160, 120, 210, 0.3);
+  color: #c0a0e8;
+}
+
+/* ============ 磁贴 F — 喜欢的东西 ============ */
+.tile-favorites {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.favorite-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.favorite-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.favorite-emoji {
+  font-size: 1.1rem;
+}
+
+.favorite-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--frost-white);
+}
+
+.favorite-desc {
+  font-size: 0.82rem;
+  color: var(--frost-white);
+  opacity: 0.6;
+  padding-left: 28px;
+  font-style: italic;
+}
+
+.favorite-detail {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--fog-blue);
+  opacity: 0.5;
+  padding-left: 28px;
+}
+
+/* ============ 磁贴 G — 坐标 ============ */
+.tile-location {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.location-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--frost-white);
+  opacity: 0.7;
+}
+
+.location-cities {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--frost-white);
+  padding-left: 2px;
+}
+
+.location-quote {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--electric-cyan);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* ============ 磁贴 H — 语言 ============ */
+.tile-languages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.lang-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.lang-item {
+  font-size: 0.75rem;
+  color: var(--frost-white);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lang-check {
+  color: var(--electric-cyan);
+  font-size: 0.7rem;
+}
+
+/* ============ 磁贴 I — 项目 ============ */
+.tile-projects {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+}
+
+.project-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(0, 240, 255, 0.15);
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-emoji {
+  font-size: 1rem;
+}
+
+.project-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--frost-white);
+}
+
+.project-desc {
+  font-size: 0.78rem;
+  color: var(--frost-white);
+  opacity: 0.5;
+  padding-left: 28px;
+}
+
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  padding-left: 28px;
+}
+
+/* ============ 磁贴 J — 联系方式 ============ */
+.tile-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.contact-emoji {
+  font-size: 0.95rem;
+  width: 22px;
+  text-align: center;
+}
+
+.contact-label {
+  color: var(--frost-white);
+  opacity: 0.5;
+  min-width: 50px;
+}
+
+.contact-value {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--fog-blue);
+}
+
+.contact-quote {
+  font-family: var(--font-handwriting);
+  font-size: 0.88rem;
+  color: var(--soft-pink);
+  opacity: 0.6;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ============ 磁贴 K — 设备 ============ */
+.tile-devices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.device-icon {
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.device-icon:hover {
+  transform: scale(1.2);
+}
+
+/* ============ 磁贴 L — 底部标语 ============ */
+.tile-slogan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 80px;
+}
+
+.slogan-text {
+  font-family: var(--font-handwriting);
+  font-size: 1.35rem;
+  color: var(--soft-pink);
+  letter-spacing: 2px;
+  line-height: 1.8;
+  animation: breatheText 4s ease-in-out infinite;
+}
+
+/* ============ 磁贴 M — 脚注 ============ */
+.tile-footer {
+  grid-column: span 6;
+  text-align: center;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.tile-footer::before {
+  display: none;
+}
+
+.tile-footer:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.footer-text {
+  font-size: 0.7rem;
+  color: var(--frost-white);
+  opacity: 0.2;
+  letter-spacing: 1px;
+}
+
+/* ============ 动画 ============ */
+@keyframes breathe {
+  0%, 100% { 
+    opacity: 1; 
+    box-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
+  }
+  50% { 
+    opacity: 0.5; 
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+  }
+}
+
+@keyframes breatheText {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tile {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.tile:nth-child(1) { animation-delay: 0.05s; }
+.tile:nth-child(2) { animation-delay: 0.1s; }
+.tile:nth-child(3) { animation-delay: 0.15s; }
+.tile:nth-child(4) { animation-delay: 0.2s; }
+.tile:nth-child(5) { animation-delay: 0.25s; }
+.tile:nth-child(6) { animation-delay: 0.3s; }
+.tile:nth-child(7) { animation-delay: 0.35s; }
+.tile:nth-child(8) { animation-delay: 0.4s; }
+.tile:nth-child(9) { animation-delay: 0.45s; }
+.tile:nth-child(10) { animation-delay: 0.5s; }
+.tile:nth-child(11) { animation-delay: 0.55s; }
+.tile:nth-child(12) { animation-delay: 0.6s; }
+.tile:nth-child(13) { animation-delay: 0.65s; }
+
+/* ============ 响应式 ============ */
+
+/* 平板 */
+@media (max-width: 900px) {
+  .tile-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .tile-3x2 { grid-column: span 2; grid-row: span 2; }
+  .tile-4x2 { grid-column: span 4; grid-row: span 2; }
+  .tile-2x2 { grid-column: span 2; grid-row: span 2; }
+  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
+  .tile-6x1 { grid-column: span 4; }
+  .tile-footer { grid-column: span 4; }
+}
+
+/* 手机 */
+@media (max-width: 600px) {
+  :root {
+    --grid-gap: 12px;
+  }
+  
+  .homepage-container {
+    padding: 20px 12px 12px;
+  }
+
+  .tile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tile-3x2 { grid-column: span 2; grid-row: span 1; }
+  .tile-1x1 { grid-column: span 1; grid-row: span 1; }
+  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
+  .tile-4x2 { grid-column: span 2; grid-row: span 1; }
+  .tile-2x2 { grid-column: span 2; grid-row: span 1; }
+  .tile-6x1 { grid-column: span 2; }
+  .tile-1x2 { grid-column: span 1; grid-row: span 1; }
+  .tile-footer { grid-column: span 2; }
+
+  .tile-profile {
+    flex-direction: row;
+    text-align: left;
+    gap: 16px;
+  }
+
+  .avatar-wrapper {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+  }
+
+  .profile-name {
+    font-size: 1.3rem;
+  }
+
+  .tile {
+    padding: 16px;
+  }
+
+  .slogan-text {
+    font-size: 1rem;
+  }
+
+  .about-quote {
+    font-size: 0.88rem;
+  }
+}
+
+/* ============ 滚动条 ============ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============ 选中文字 ============ */
+::selection {
+  background: rgba(0, 240, 255, 0.2);
+  color: var(--frost-white);
+}
