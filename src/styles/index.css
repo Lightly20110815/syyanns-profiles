@@ -122,6 +122,8 @@ a:hover {
 .tile-4x2 { grid-column: span 4; grid-row: span 2; }
 .tile-2x2 { grid-column: span 2; grid-row: span 2; }
 .tile-6x1 { grid-column: span 6; grid-row: span 1; }
+.tile-6x2 { grid-column: span 6; grid-row: span 2; }
+.tile-3x1 { grid-column: span 3; grid-row: span 1; }
 .tile-1x2 { grid-column: span 1; grid-row: span 2; }
 
 /* ============ 磁贴 A — 头像 & 名字 ============ */
@@ -476,6 +478,106 @@ a:hover {
   font-size: 0.7rem;
 }
 
+/* ============ 磁贴 N — 此刻在听 ============ */
+.tile-nowplaying {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nowplaying-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nowplaying-emoji {
+  font-size: 1.3rem;
+}
+
+.nowplaying-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--frost-white);
+}
+
+.nowplaying-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--soft-pink);
+  opacity: 0.7;
+  font-style: italic;
+  padding-left: 4px;
+}
+
+/* ============ 磁贴 O — 小小心愿 ============ */
+.tile-wish {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.wish-emoji {
+  font-size: 1.6rem;
+}
+
+.wish-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--frost-white);
+  opacity: 0.8;
+}
+
+.wish-text {
+  font-family: var(--font-handwriting);
+  font-size: 0.78rem;
+  color: var(--soft-pink);
+  opacity: 0.6;
+  line-height: 1.4;
+}
+
+/* ============ 磁贴 P — 技术栈 ============ */
+.tile-techstack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.techstack-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.techstack-label {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--frost-white);
+}
+
+.techstack-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.techstack-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: var(--electric-cyan);
+}
+
 /* ============ 磁贴 I — 项目 ============ */
 .tile-projects {
   display: flex;
@@ -704,6 +806,7 @@ a:hover {
   .tile-2x2 { grid-column: span 2; grid-row: span 2; }
   .tile-2x1 { grid-column: span 2; grid-row: span 1; }
   .tile-6x1 { grid-column: span 4; }
+  .tile-6x2 { grid-column: span 4; grid-row: span 2; }
   .tile-footer { grid-column: span 4; }
   
   /* 调整小屏字体大小 */

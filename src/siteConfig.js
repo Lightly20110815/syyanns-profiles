@@ -13,7 +13,7 @@ const siteConfig = {
     name: '夕妍',                          // 你的昵称
     id: '@yxrchina',                        // 你的网络 ID
     signature: '// 重构时间线，再次重逢\n// 还在找一个暖暖的、不会消失的地方……好想被抱抱',  // 签名
-    avatar: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=cyber-girl&backgroundColor=0a0e1a', // 头像URL，可替换为本地图片 如 '/avatar.png'
+    avatar: '/avatar.png', // 头像URL，可替换为本地图片
     isOnline: true,                        // 在线状态 true=在线 false=离线
   },
 
@@ -163,6 +163,27 @@ const siteConfig = {
     quote: '在信号快要消失的地方，悄悄建一座小小的、软软的房子，然后把灯一直开着……希望有一天，有人会温柔地推开门，轻轻 rua 一下我。',
   },
 
+  // ========== 此刻在听 (填充磁贴) ==========
+  nowPlaying: {
+    emoji: '🎧',
+    label: '此刻在听',
+    text: '某首让人想哭的后摇……',
+  },
+
+  // ========== 小小心愿 (填充磁贴) ==========
+  wish: {
+    emoji: '🌟',
+    label: '小小心愿',
+    text: '想被轻轻rua一下然后说"你很好"',
+  },
+
+  // ========== 技术栈 (填充磁贴) ==========
+  techStack: {
+    emoji: '⚡',
+    label: 'Tech Stack',
+    items: ['React', 'Vite', 'C++', 'Node.js'],
+  },
+
   // ========== 设备/平台 K ==========
   devices: ['🍎', '🪟', '🐧'],
 
@@ -170,7 +191,7 @@ const siteConfig = {
   slogan: '在信号快要消失的地方，悄悄建一座小小的、软软的房子，然后把灯一直开着……希望有一天，有人会温柔地推开门，轻轻 rua 一下我。',
 
   // ========== 脚注 M ==========
-  footer: '© 2025  ·  这里是我不会丢的地方  ·  Inspired by BentoUI',
+  footer: '© 2026  ·  这里是我不会丢的地方  ·  Sy Yann',
 
   // ========== 主题配置 ==========
   theme: {
