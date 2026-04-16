@@ -680,29 +680,117 @@ a:hover {
 .tile:nth-child(12) { animation-delay: 0.6s; }
 .tile:nth-child(13) { animation-delay: 0.65s; }
 
-/* ============ 响应式 ============ */
+/* ============ 响应式设计优化 ============ */
 
-/* 平板 */
+/* 中等平板断点 (901px - 1200px) 保持原6列布局 */
+@media (max-width: 1200px) {
+  .homepage-container {
+    padding: 32px 24px 20px;
+  }
+}
+
+/* 小平板断点 (769px - 900px) */
 @media (max-width: 900px) {
+  .homepage-container {
+    padding: 28px 20px 16px;
+  }
+
   .tile-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+  
   .tile-3x2 { grid-column: span 2; grid-row: span 2; }
   .tile-4x2 { grid-column: span 4; grid-row: span 2; }
   .tile-2x2 { grid-column: span 2; grid-row: span 2; }
   .tile-2x1 { grid-column: span 2; grid-row: span 1; }
   .tile-6x1 { grid-column: span 4; }
   .tile-footer { grid-column: span 4; }
+  
+  /* 调整小屏字体大小 */
+  .profile-name {
+    font-size: 1.6rem;
+  }
+  
+  .profile-signature {
+    font-size: 0.75rem;
+  }
+  
+  .tile-title h2 {
+    font-size: 1.2rem;
+  }
+  
+  .slogan-text {
+    font-size: 1.2rem;
+  }
 }
 
-/* 手机 */
-@media (max-width: 600px) {
+/* 大手机/小平板断点 (601px - 768px) */
+@media (max-width: 768px) {
   :root {
-    --grid-gap: 12px;
+    --grid-gap: 14px;
   }
   
   .homepage-container {
-    padding: 20px 12px 12px;
+    padding: 24px 16px 16px;
+  }
+
+  .tile-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .tile-3x2 { grid-column: span 3; grid-row: span 1; }
+  .tile-1x1 { grid-column: span 1; grid-row: span 1; }
+  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
+  .tile-4x2 { grid-column: span 3; grid-row: span 1; }
+  .tile-2x2 { grid-column: span 2; grid-row: span 1; }
+  .tile-6x1 { grid-column: span 3; }
+  .tile-1x2 { grid-column: span 1; grid-row: span 1; }
+  .tile-footer { grid-column: span 3; }
+  
+  /* 优化触摸目标大小 */
+  .tag {
+    padding: 6px 16px;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .contact-item {
+    min-height: 36px;
+  }
+  
+  .project-item {
+    min-height: 70px;
+  }
+  
+  /* 调整小屏字体大小 */
+  .profile-name {
+    font-size: 1.4rem;
+  }
+  
+  .profile-id {
+    font-size: 0.85rem;
+  }
+  
+  .tile-title h2 {
+    font-size: 1.15rem;
+  }
+  
+  .slogan-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* 手机断点 (481px - 600px) */
+@media (max-width: 600px) {
+  :root {
+    --grid-gap: 12px;
+    --tile-blur: 16px;
+    --tile-radius: 14px;
+  }
+  
+  .homepage-container {
+    padding: 20px 14px 14px;
   }
 
   .tile-grid {
@@ -733,17 +821,208 @@ a:hover {
   .profile-name {
     font-size: 1.3rem;
   }
+  
+  .profile-id {
+    font-size: 0.8rem;
+  }
+  
+  .profile-signature {
+    font-size: 0.7rem;
+  }
 
   .tile {
     padding: 16px;
   }
-
+  
+  /* 减小部分字体大小 */
+  .status-number {
+    font-size: 2rem;
+  }
+  
+  .tile-title h2 {
+    font-size: 1.1rem;
+  }
+  
+  .tile-title span {
+    font-size: 0.75rem;
+  }
+  
+  .about-list li {
+    font-size: 0.82rem;
+  }
+  
+  .contact-item {
+    font-size: 0.78rem;
+  }
+  
   .slogan-text {
     font-size: 1rem;
   }
 
   .about-quote {
     font-size: 0.88rem;
+  }
+}
+
+/* 小手机断点 (max-width: 480px) */
+@media (max-width: 480px) {
+  :root {
+    --grid-gap: 10px;
+    --tile-blur: 12px;
+    --tile-radius: 12px;
+  }
+  
+  .homepage-container {
+    padding: 16px 12px 12px;
+  }
+
+  .tile {
+    padding: 14px;
+  }
+  
+  .avatar-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .profile-name {
+    font-size: 1.2rem;
+  }
+  
+  .profile-id {
+    font-size: 0.75rem;
+  }
+  
+  .profile-signature {
+    font-size: 0.65rem;
+  }
+  
+  .status-number {
+    font-size: 1.8rem;
+  }
+  
+  .tile-title h2 {
+    font-size: 1rem;
+  }
+  
+  .tile-title span {
+    font-size: 0.7rem;
+  }
+  
+  .about-list li {
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  
+  .slogan-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .about-quote {
+    font-size: 0.82rem;
+  }
+  
+  .contact-quote {
+    font-size: 0.78rem;
+  }
+  
+  /* 优化触摸目标 */
+  .tag {
+    padding: 5px 14px;
+    min-height: 30px;
+    font-size: 0.75rem;
+  }
+  
+  .contact-item {
+    min-height: 34px;
+    font-size: 0.75rem;
+  }
+  
+  .contact-emoji {
+    font-size: 0.9rem;
+  }
+  
+  .project-item {
+    min-height: 65px;
+    padding: 8px 10px;
+  }
+  
+  .project-name {
+    font-size: 0.85rem;
+  }
+  
+  .project-desc {
+    font-size: 0.72rem;
+  }
+}
+
+/* 超小手机断点 (max-width: 360px) */
+@media (max-width: 360px) {
+  :root {
+    --grid-gap: 8px;
+    --tile-radius: 10px;
+  }
+  
+  .homepage-container {
+    padding: 14px 10px 10px;
+  }
+
+  .tile-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tile-3x2,
+  .tile-1x1,
+  .tile-2x1,
+  .tile-4x2,
+  .tile-2x2,
+  .tile-6x1,
+  .tile-1x2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .tile-footer {
+    grid-column: span 1;
+  }
+  
+  .tile-profile {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .avatar-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-name {
+    font-size: 1.3rem;
+  }
+  
+  .profile-signature {
+    max-width: 100%;
+  }
+  
+  .tile {
+    padding: 12px;
+  }
+  
+  .slogan-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  /* 标签换行优化 */
+  .tags-container {
+    gap: 6px;
+  }
+  
+  .tag {
+    font-size: 0.7rem;
+    padding: 4px 12px;
   }
 }
 
