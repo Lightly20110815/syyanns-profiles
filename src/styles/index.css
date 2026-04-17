@@ -65,6 +65,45 @@ a:hover {
   pointer-events: none;
 }
 
+/* ============ 主题切换按钮 ============ */
+.theme-switcher {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: var(--tile-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--tile-border);
+  border-radius: 24px;
+  padding: 8px 18px;
+  color: var(--frost-white);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.theme-switcher:hover {
+  transform: scale(1.05);
+  border-color: var(--electric-cyan);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.switcher-group {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+}
+
+.switcher-group .theme-switcher {
+  position: static;
+}
+
 /* ============ 主容器 ============ */
 .homepage-container {
   position: relative;
@@ -1127,6 +1166,546 @@ a:hover {
     font-size: 0.7rem;
     padding: 4px 12px;
   }
+}
+
+/* ============================================================
+   布局: 单列长页
+   ============================================================ */
+.layout-single {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.layout-single .tile {
+  grid-column: unset !important;
+  grid-row: unset !important;
+}
+
+.single-hero {
+  display: flex;
+  justify-content: center;
+}
+
+.single-hero .tile {
+  width: 100%;
+}
+
+.single-section {
+  width: 100%;
+}
+
+.single-section .tile {
+  width: 100%;
+}
+
+.single-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.single-row .tile {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 单列风格额外样式 */
+.ui-single .tile {
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.ui-single .tile-profile {
+  padding: 48px 28px;
+}
+
+.ui-single .avatar-wrapper {
+  width: 120px;
+  height: 120px;
+}
+
+.ui-single .profile-name {
+  font-size: 2.2rem;
+}
+
+.ui-single .tile-slogan {
+  min-height: 100px;
+}
+
+/* ============================================================
+   布局: 左右分栏
+   ============================================================ */
+.layout-split {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.layout-split .tile {
+  grid-column: unset !important;
+  grid-row: unset !important;
+}
+
+.split-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 20px;
+}
+
+.split-sidebar .tile {
+  width: 100%;
+}
+
+.split-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.split-main .tile {
+  width: 100%;
+}
+
+.split-row {
+  display: flex;
+  gap: 16px;
+}
+
+.split-row .tile {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 分栏风格额外样式 */
+.ui-split .tile {
+  border-radius: 12px;
+}
+
+.ui-split .split-sidebar .tile-profile {
+  padding: 32px 20px;
+}
+
+.ui-split .split-sidebar .avatar-wrapper {
+  width: 90px;
+  height: 90px;
+}
+
+@media (max-width: 768px) {
+  .layout-split {
+    flex-direction: column;
+  }
+  .split-sidebar {
+    width: 100%;
+    position: static;
+  }
+}
+
+/* ============================================================
+   布局: 瀑布流
+   ============================================================ */
+.layout-masonry {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.layout-masonry .tile {
+  grid-column: unset !important;
+  grid-row: unset !important;
+}
+
+.masonry-col {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.masonry-col .tile {
+  width: 100%;
+}
+
+.layout-masonry > .tile-slogan {
+  width: 100%;
+  flex-basis: 100%;
+}
+
+.layout-masonry > .tile-footer {
+  width: 100%;
+  flex-basis: 100%;
+}
+
+/* 瀑布流额外样式 */
+.ui-masonry .tile {
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ui-masonry .tile:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 600px) {
+  .layout-masonry {
+    flex-direction: column;
+  }
+  .masonry-col {
+    min-width: 100%;
+  }
+}
+
+/* ============================================================
+   UI 风格 1: 玻璃磁贴 (默认，无需额外覆盖)
+   ============================================================ */
+
+/* ============================================================
+   UI 风格 2: 新拟态 — 柔和凸起/凹陷效果
+   ============================================================ */
+.ui-neumorph .tile {
+  background: var(--bg-secondary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  border-radius: 20px;
+  box-shadow:
+    6px 6px 16px rgba(0, 0, 0, 0.35),
+    -6px -6px 16px rgba(255, 255, 255, 0.04);
+}
+
+.ui-neumorph .tile::before {
+  background: none;
+}
+
+.ui-neumorph .tile:hover {
+  transform: translateY(-2px);
+  border-color: transparent;
+  box-shadow:
+    8px 8px 20px rgba(0, 0, 0, 0.4),
+    -8px -8px 20px rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.ui-neumorph .avatar {
+  border-radius: 50%;
+  border: 3px solid var(--bg-secondary);
+  box-shadow:
+    4px 4px 10px rgba(0, 0, 0, 0.3),
+    -4px -4px 10px rgba(255, 255, 255, 0.03);
+}
+
+.ui-neumorph .tag {
+  border: none;
+  border-radius: 12px;
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.25),
+    -3px -3px 8px rgba(255, 255, 255, 0.03);
+}
+
+.ui-neumorph .techstack-tag {
+  border: none;
+  box-shadow:
+    2px 2px 6px rgba(0, 0, 0, 0.2),
+    -2px -2px 6px rgba(255, 255, 255, 0.02);
+}
+
+.ui-neumorph .project-item {
+  border: none;
+  border-radius: 14px;
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.2),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.02);
+}
+
+.ui-neumorph .tile-divider {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--bg-primary);
+  box-shadow:
+    inset 1px 1px 3px rgba(0, 0, 0, 0.3),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.02);
+  width: 60px;
+}
+
+.ui-neumorph .status-number {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   UI 风格 3: 赛博朋克 — 霓虹边框、扫描线、毛刺感
+   ============================================================ */
+.ui-cyberpunk .tile {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--electric-cyan);
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.ui-cyberpunk .tile::before {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 2px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+  border-radius: 0;
+}
+
+.ui-cyberpunk .tile::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--electric-cyan), transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+@keyframes scanLine {
+  0% { top: 0; opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { top: 100%; opacity: 1; }
+}
+
+.ui-cyberpunk .tile:hover {
+  transform: none;
+  border-color: var(--soft-pink);
+  box-shadow:
+    0 0 10px var(--electric-cyan),
+    0 0 30px rgba(0, 240, 255, 0.15),
+    inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.ui-cyberpunk .tile-title h2 {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 8px var(--electric-cyan);
+}
+
+.ui-cyberpunk .profile-name {
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  text-shadow:
+    0 0 10px var(--electric-cyan),
+    0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.ui-cyberpunk .avatar {
+  border-radius: 2px;
+  border: 2px solid var(--electric-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+.ui-cyberpunk .tag {
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+}
+
+.ui-cyberpunk .techstack-tag {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-color: var(--electric-cyan);
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.15);
+}
+
+.ui-cyberpunk .tile-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--electric-cyan);
+  box-shadow: 0 0 6px var(--electric-cyan);
+}
+
+.ui-cyberpunk .slogan-text {
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  text-shadow: 0 0 15px var(--soft-pink);
+  font-family: var(--font-mono);
+}
+
+.ui-cyberpunk .status-number {
+  text-shadow: 0 0 12px var(--electric-cyan);
+}
+
+/* ============================================================
+   UI 风格 4: 极简线框 — 细边框、大留白、干净排版
+   ============================================================ */
+.ui-minimal .tile {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--tile-border);
+  border-radius: 0;
+  padding: 24px;
+}
+
+.ui-minimal .tile::before {
+  display: none;
+}
+
+.ui-minimal .tile:hover {
+  transform: none;
+  border-color: var(--frost-white);
+  box-shadow: none;
+}
+
+.ui-minimal .avatar {
+  border-radius: 0;
+  border: 1px solid var(--tile-border);
+}
+
+.ui-minimal .tag {
+  border-radius: 0;
+  background: transparent;
+}
+
+.ui-minimal .techstack-tag {
+  border-radius: 0;
+  background: transparent;
+}
+
+.ui-minimal .project-item {
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ui-minimal .tile-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--frost-white);
+  opacity: 0.3;
+}
+
+.ui-minimal .profile-name {
+  font-weight: 300;
+  letter-spacing: 6px;
+  font-size: 1.6rem;
+}
+
+.ui-minimal .tile-title h2 {
+  font-weight: 300;
+  letter-spacing: 3px;
+}
+
+.ui-minimal .slogan-text {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  letter-spacing: 6px;
+  font-size: 1.1rem;
+}
+
+.ui-minimal .status-number {
+  font-weight: 200;
+  font-size: 3rem;
+}
+
+.ui-minimal .mood-text,
+.ui-minimal .about-quote,
+.ui-minimal .contact-quote,
+.ui-minimal .wish-text {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* ============================================================
+   UI 风格 5: 复古像素 — 粗边框、像素感圆角、怀旧阴影
+   ============================================================ */
+.ui-retro .tile {
+  background: var(--bg-secondary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 3px solid var(--tile-border);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  image-rendering: pixelated;
+}
+
+.ui-retro .tile::before {
+  display: none;
+}
+
+.ui-retro .tile:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+  border-color: var(--electric-cyan);
+}
+
+.ui-retro .avatar {
+  border-radius: 0;
+  border: 3px solid var(--tile-border);
+  image-rendering: pixelated;
+}
+
+.ui-retro .tag {
+  border-radius: 0;
+  border-width: 2px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ui-retro .techstack-tag {
+  border-radius: 0;
+  border-width: 2px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ui-retro .project-item {
+  border-radius: 0;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ui-retro .tile-divider {
+  width: 48px;
+  height: 3px;
+  background: var(--electric-cyan);
+  border-radius: 0;
+}
+
+.ui-retro .profile-name {
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.ui-retro .tile-title h2 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.ui-retro .slogan-text {
+  font-family: var(--font-mono);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+}
+
+.ui-retro .status-number {
+  font-size: 2.8rem;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ui-retro .theme-switcher,
+.ui-retro .switcher-group .theme-switcher {
+  border-radius: 0;
+  border-width: 2px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* ============ 滚动条 ============ */

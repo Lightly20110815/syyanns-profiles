@@ -69,6 +69,110 @@ const themes = [
       '--tile-border': 'rgba(255, 180, 80, 0.14)',
     },
   },
+  {
+    name: 'ocean',  // 深海珊瑚
+    vars: {
+      '--bg-primary': '#051520',
+      '--bg-secondary': '#0a2030',
+      '--fog-blue': '#5ca8c8',
+      '--frost-white': '#d8eaf4',
+      '--soft-pink': '#f08080',
+      '--electric-cyan': '#20d0d0',
+      '--tile-bg': 'rgba(32, 208, 208, 0.06)',
+      '--tile-border': 'rgba(32, 208, 208, 0.12)',
+    },
+  },
+  {
+    name: 'rose',  // 玫瑰晨露
+    vars: {
+      '--bg-primary': '#1c0f14',
+      '--bg-secondary': '#2a161e',
+      '--fog-blue': '#c8a0b0',
+      '--frost-white': '#f5e8ee',
+      '--soft-pink': '#f0a0c0',
+      '--electric-cyan': '#ff7096',
+      '--tile-bg': 'rgba(255, 160, 192, 0.06)',
+      '--tile-border': 'rgba(255, 112, 150, 0.14)',
+    },
+  },
+  {
+    name: 'mint',  // 薄荷清晨
+    vars: {
+      '--bg-primary': '#f0f6f4',
+      '--bg-secondary': '#e4efea',
+      '--fog-blue': '#5a8a7a',
+      '--frost-white': '#2a3a34',
+      '--soft-pink': '#88b8a4',
+      '--electric-cyan': '#30a080',
+      '--tile-bg': 'rgba(48, 160, 128, 0.08)',
+      '--tile-border': 'rgba(48, 160, 128, 0.15)',
+    },
+  },
+  {
+    name: 'latte',  // 拿铁午后
+    vars: {
+      '--bg-primary': '#f5f0e8',
+      '--bg-secondary': '#eae4d8',
+      '--fog-blue': '#8a7a60',
+      '--frost-white': '#3a3028',
+      '--soft-pink': '#c09878',
+      '--electric-cyan': '#b07040',
+      '--tile-bg': 'rgba(176, 112, 64, 0.08)',
+      '--tile-border': 'rgba(176, 112, 64, 0.15)',
+    },
+  },
+  {
+    name: 'lavender',  // 薰衣草梦境
+    vars: {
+      '--bg-primary': '#f2eef8',
+      '--bg-secondary': '#e8e0f2',
+      '--fog-blue': '#7868a0',
+      '--frost-white': '#2e2840',
+      '--soft-pink': '#b090d0',
+      '--electric-cyan': '#9060c8',
+      '--tile-bg': 'rgba(144, 96, 200, 0.07)',
+      '--tile-border': 'rgba(144, 96, 200, 0.14)',
+    },
+  },
+  {
+    name: 'midnight',  // 午夜霓虹
+    vars: {
+      '--bg-primary': '#0a0010',
+      '--bg-secondary': '#10081c',
+      '--fog-blue': '#a080e0',
+      '--frost-white': '#e0d8f0',
+      '--soft-pink': '#ff60a0',
+      '--electric-cyan': '#a040ff',
+      '--tile-bg': 'rgba(160, 64, 255, 0.07)',
+      '--tile-border': 'rgba(255, 96, 160, 0.14)',
+    },
+  },
+  {
+    name: 'sunset',  // 日落海岸
+    vars: {
+      '--bg-primary': '#1a0c08',
+      '--bg-secondary': '#281410',
+      '--fog-blue': '#d0a080',
+      '--frost-white': '#f5e8e0',
+      '--soft-pink': '#f08050',
+      '--electric-cyan': '#ff6830',
+      '--tile-bg': 'rgba(255, 104, 48, 0.06)',
+      '--tile-border': 'rgba(240, 128, 80, 0.14)',
+    },
+  },
+  {
+    name: 'snow',  // 初雪素白
+    vars: {
+      '--bg-primary': '#f8f9fc',
+      '--bg-secondary': '#eef0f5',
+      '--fog-blue': '#6080a0',
+      '--frost-white': '#1a2030',
+      '--soft-pink': '#90a8c0',
+      '--electric-cyan': '#3070b0',
+      '--tile-bg': 'rgba(48, 112, 176, 0.06)',
+      '--tile-border': 'rgba(48, 112, 176, 0.12)',
+    },
+  },
 ]
 
 // ==================== 磁贴 A: 头像 & 名字 ====================
@@ -345,9 +449,171 @@ function TileFooter() {
   )
 }
 
+// 主题名称映射
+const themeLabels = {
+  default: '深海赛博', sakura: '樱花暮色', forest: '幽林晨雾', dusk: '暮光紫霞',
+  amber: '琥珀暖光', ocean: '深海珊瑚', rose: '玫瑰晨露', mint: '薄荷清晨',
+  latte: '拿铁午后', lavender: '薰衣草梦境', midnight: '午夜霓虹', sunset: '日落海岸',
+  snow: '初雪素白',
+}
+
+// ==================== UI 风格系统 ====================
+const uiStyles = [
+  { name: '玻璃磁贴', className: 'ui-glass', layout: 'grid' },
+  { name: '单列长页', className: 'ui-single', layout: 'single' },
+  { name: '赛博朋克', className: 'ui-cyberpunk', layout: 'grid' },
+  { name: '左右分栏', className: 'ui-split', layout: 'split' },
+  { name: '卡片瀑布', className: 'ui-masonry', layout: 'masonry' },
+]
+
+// ==================== 布局: 6列磁贴网格 ====================
+function LayoutGrid() {
+  return (
+    <div className="tile-grid">
+      <TileProfile />
+      <TileStatus />
+      <TileMood />
+      <TileLanguages />
+      <TileLocation />
+      <TileAbout />
+      <TileTags />
+      <TileFavorites />
+      <TileDevices />
+      <TileContact />
+      <TileProjects />
+      <TileNowPlaying />
+      <TileWish />
+      <TileTechStack />
+      <TileSlogan />
+      <TileFooter />
+    </div>
+  )
+}
+
+// ==================== 布局: 单列长页 ====================
+function LayoutSingle() {
+  return (
+    <div className="layout-single">
+      <section className="single-hero">
+        <TileProfile />
+      </section>
+      <section className="single-row">
+        <TileStatus />
+        <TileMood />
+        <TileLanguages />
+      </section>
+      <section className="single-section">
+        <TileAbout />
+      </section>
+      <section className="single-row">
+        <TileLocation />
+        <TileNowPlaying />
+      </section>
+      <section className="single-section">
+        <TileTags />
+      </section>
+      <section className="single-section">
+        <TileFavorites />
+      </section>
+      <section className="single-section">
+        <TileProjects />
+      </section>
+      <section className="single-row">
+        <TileTechStack />
+        <TileWish />
+      </section>
+      <section className="single-section">
+        <TileContact />
+      </section>
+      <section className="single-row">
+        <TileDevices />
+      </section>
+      <section className="single-hero">
+        <TileSlogan />
+      </section>
+      <TileFooter />
+    </div>
+  )
+}
+
+// ==================== 布局: 左右分栏 ====================
+function LayoutSplit() {
+  return (
+    <div className="layout-split">
+      <aside className="split-sidebar">
+        <TileProfile />
+        <TileStatus />
+        <TileLanguages />
+        <TileDevices />
+        <TileContact />
+      </aside>
+      <main className="split-main">
+        <div className="split-row">
+          <TileMood />
+          <TileLocation />
+        </div>
+        <TileAbout />
+        <div className="split-row">
+          <TileTags />
+          <TileNowPlaying />
+        </div>
+        <TileFavorites />
+        <TileProjects />
+        <div className="split-row">
+          <TileTechStack />
+          <TileWish />
+        </div>
+        <TileSlogan />
+        <TileFooter />
+      </main>
+    </div>
+  )
+}
+
+// ==================== 布局: 瀑布流 ====================
+function LayoutMasonry() {
+  return (
+    <div className="layout-masonry">
+      <div className="masonry-col">
+        <TileProfile />
+        <TileMood />
+        <TileFavorites />
+        <TileNowPlaying />
+        <TileDevices />
+      </div>
+      <div className="masonry-col">
+        <TileAbout />
+        <TileTags />
+        <TileProjects />
+        <TileWish />
+      </div>
+      <div className="masonry-col">
+        <TileStatus />
+        <TileLanguages />
+        <TileLocation />
+        <TileContact />
+        <TileTechStack />
+      </div>
+      <TileSlogan />
+      <TileFooter />
+    </div>
+  )
+}
+
 // ==================== 主应用 ====================
 export default function App() {
-  const theme = useMemo(() => themes[Math.floor(Math.random() * themes.length)], [])
+  const [themeIndex, setThemeIndex] = useState(() => Math.floor(Math.random() * themes.length))
+  const [uiIndex, setUiIndex] = useState(0)
+  const theme = themes[themeIndex]
+  const uiStyle = uiStyles[uiIndex]
+
+  const nextTheme = useCallback(() => {
+    setThemeIndex(i => (i + 1) % themes.length)
+  }, [])
+
+  const nextUi = useCallback(() => {
+    setUiIndex(i => (i + 1) % uiStyles.length)
+  }, [])
 
   useEffect(() => {
     const root = document.documentElement
@@ -357,37 +623,28 @@ export default function App() {
     document.body.style.backgroundColor = theme.vars['--bg-primary']
   }, [theme])
 
+  const renderLayout = () => {
+    switch (uiStyle.layout) {
+      case 'single': return <LayoutSingle />
+      case 'split': return <LayoutSplit />
+      case 'masonry': return <LayoutMasonry />
+      default: return <LayoutGrid />
+    }
+  }
+
   return (
     <>
       <Particles />
-      <div className="homepage-container">
-        <div className="tile-grid">
-          {/* 第一行: Profile占3×2, 右侧上下各放小磁贴填满 */}
-          <TileProfile />    {/* A: 3×2 头像&名字 */}
-          <TileStatus />     {/* B: 1×1 状态 */}
-          <TileMood />       {/* C: 2×1 情绪气象 */}
-          <TileLanguages />  {/* H: 1×1 语言 — 填充第2行 */}
-          <TileLocation />   {/* G: 2×1 坐标 — 填充第2行 */}
-
-          {/* 第二行: About 4×2 + Tags 2×2 = 完美 */}
-          <TileAbout />      {/* D: 4×2 关于我 */}
-          <TileTags />       {/* E: 2×2 标签墙 */}
-
-          {/* 第三行: Favorites 3×2 + Devices 1×2 + Contact 2×2 = 6 */}
-          <TileFavorites />  {/* F: 3×2 喜欢的东西 */}
-          <TileDevices />    {/* K: 1×2 设备 */}
-          <TileContact />    {/* J: 2×2 联系方式 */}
-
-          {/* 第四行: Projects 3×2 + NowPlaying 2×1 + Wish 1×1 + (空1×1自动留给下一行) */}
-          <TileProjects />   {/* I: 3×2 项目 */}
-          <TileNowPlaying /> {/* N: 2×1 此刻在听 */}
-          <TileWish />       {/* O: 1×1 小小心愿 */}
-          <TileTechStack />  {/* P: 3×1 技术栈 — 填充Projects第2行 */}
-
-          {/* 第五行 */}
-          <TileSlogan />     {/* L: 6×1 底部标语 */}
-          <TileFooter />     {/* M: 脚注 */}
-        </div>
+      <div className="switcher-group">
+        <button className="theme-switcher" onClick={nextTheme} title="切换配色">
+          🎨 {themeLabels[theme.name]}
+        </button>
+        <button className="theme-switcher" onClick={nextUi} title="切换UI风格">
+          ✨ {uiStyle.name}
+        </button>
+      </div>
+      <div className={`homepage-container ${uiStyle.className}`}>
+        {renderLayout()}
       </div>
     </>
   )
