@@ -10,7 +10,7 @@ const siteConfig = {
 
   // ========== 基础信息 ==========
   profile: {
-    name: '夕妍',                          // 你的昵称
+    name: 'Sy Yann',                          // 你的昵称
     id: '@yxrchina',                        // 你的网络 ID
     signature: '// 重构时间线，再次重逢\n// 还在找一个暖暖的、不会消失的地方……好想被抱抱',  // 签名
     avatar: '/avatar.png', // 头像URL，可替换为本地图片

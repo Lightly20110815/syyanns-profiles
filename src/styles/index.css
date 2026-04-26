@@ -1,1733 +1,497 @@
-/* ============================================
-   磁贴式个人主页 — 全局样式
-   ============================================ */
-
-/* CSS 变量 — 从 siteConfig 的 theme 映射 */
 :root {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #0f1428;
-  --fog-blue: #7eb8d4;
-  --frost-white: #e8edf2;
-  --soft-pink: #d4a0b9;
-  --electric-cyan: #00f0ff;
-  --tile-bg: rgba(255, 255, 255, 0.08);
-  --tile-border: rgba(255, 255, 255, 0.12);
-  --tile-blur: 20px;
-  --tile-radius: 16px;
-  --grid-gap: 16px;
-  --max-width: 1200px;
-  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --font-handwriting: 'Ma Shan Zheng', cursive;
-}
-
-/* Reset */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
+  /* 极简通透的亮色系统 (Light Mode) */
+  --bg-color: #f5f5f7;
+  --text-main: #1d1d1f;
+  --text-secondary: #86868b;
+  --accent-color: #ff8fab;
+  
+  /* macOS 面板质感 */
+  --panel-bg: rgba(255, 255, 255, 0.55);
+  --panel-border: rgba(255, 255, 255, 0.6);
+  --panel-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  --panel-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  --radius-lg: 28px;
+  --radius-md: 18px;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--bg-primary);
-  color: var(--frost-white);
-  min-height: 100vh;
-  overflow-x: hidden;
-  line-height: 1.6;
+  font-family: "Inter", "LXGW WenKai TC", -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-a {
-  color: var(--electric-cyan);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
+::-webkit-scrollbar { width: 0px; background: transparent; }
 
-a:hover {
-  opacity: 0.8;
-}
-
-/* ============ 粒子背景 ============ */
-.particles-canvas {
+/* ================= 极光网格背景 (Mesh Gradient) ================= */
+.aurora-bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ============ 主题切换按钮 ============ */
-.theme-switcher {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 100;
-  background: var(--tile-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--tile-border);
-  border-radius: 24px;
-  padding: 8px 18px;
-  color: var(--frost-white);
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.theme-switcher:hover {
-  transform: scale(1.05);
-  border-color: var(--electric-cyan);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.switcher-group {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 100;
-  display: flex;
-  gap: 8px;
-}
-
-.switcher-group .theme-switcher {
-  position: static;
-}
-
-/* ============ 主容器 ============ */
-.homepage-container {
-  position: relative;
-  z-index: 1;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 40px 20px 20px;
-}
-
-/* ============ 磁贴网格 ============ */
-.tile-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--grid-gap);
-  width: 100%;
-}
-
-/* ============ 磁贴基础样式 ============ */
-.tile {
-  background: var(--tile-bg);
-  backdrop-filter: blur(var(--tile-blur));
-  -webkit-backdrop-filter: blur(var(--tile-blur));
-  border: 1px solid var(--tile-border);
-  border-radius: var(--tile-radius);
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
+  background-color: #f8f9fa;
   overflow: hidden;
 }
 
-.tile::before {
-  content: '';
+.aurora-blob {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: var(--tile-radius);
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
-  pointer-events: none;
+  filter: blur(90px);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: auroraFlow 20s infinite alternate ease-in-out;
 }
 
-.tile:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 240, 255, 0.3);
-  box-shadow: 
-    0 8px 32px rgba(0, 240, 255, 0.1),
-    0 0 0 1px rgba(0, 240, 255, 0.1);
+.blob-1 {
+  width: 60vw; height: 60vw;
+  background: #ffd1dc; /* 浅粉色 */
+  top: -20%; left: -10%;
+  animation-delay: 0s;
 }
 
-/* ============ 磁贴尺寸 ============ */
-.tile-3x2 { grid-column: span 3; grid-row: span 2; }
-.tile-1x1 { grid-column: span 1; grid-row: span 1; }
-.tile-2x1 { grid-column: span 2; grid-row: span 1; }
-.tile-4x2 { grid-column: span 4; grid-row: span 2; }
-.tile-2x2 { grid-column: span 2; grid-row: span 2; }
-.tile-6x1 { grid-column: span 6; grid-row: span 1; }
-.tile-6x2 { grid-column: span 6; grid-row: span 2; }
-.tile-3x1 { grid-column: span 3; grid-row: span 1; }
-.tile-1x2 { grid-column: span 1; grid-row: span 2; }
+.blob-2 {
+  width: 50vw; height: 50vw;
+  background: #e2eafc; /* 极光蓝 */
+  bottom: -10%; right: -10%;
+  animation-delay: -5s;
+}
 
-/* ============ 磁贴 A — 头像 & 名字 ============ */
-.tile-profile {
+.blob-3 {
+  width: 40vw; height: 40vw;
+  background: #fcf6bd; /* 奶油黄 */
+  top: 40%; left: 30%;
+  animation-delay: -10s;
+}
+
+@keyframes auroraFlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10%, -10%) scale(1.1); }
+}
+
+/* ================= 仪表盘布局 ================= */
+.apple-dashboard {
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+@media (max-width: 850px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+}
+
+/* ================= 通用玻璃面板 ================= */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--panel-shadow), var(--panel-highlight);
+}
+
+/* ================= 左侧中控台 ================= */
+.dashboard-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 60px;
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
+  gap: 30px;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 850px) {
+  .dashboard-sidebar {
+    width: 100%;
+    position: static;
+    padding: 30px 20px;
+  }
+}
+
+.profile-section {
   text-align: center;
 }
 
 .avatar-wrapper {
   position: relative;
-  width: 100px;
-  height: 100px;
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
-.avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
+.avatar-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--tile-border);
-  background: var(--bg-secondary);
+  border: 2px solid rgba(255,255,255,0.9);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+.avatar-img:hover {
+  transform: scale(1.03);
 }
 
 .status-dot {
   position: absolute;
   bottom: 4px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background-color: #34c759;
   border-radius: 50%;
-  border: 3px solid var(--bg-primary);
-}
-
-.status-dot.online {
-  background: #00ff88;
-  animation: breathe 2s ease-in-out infinite;
-}
-
-.status-dot.offline {
-  background: #888;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(52,199,89,0.3);
 }
 
 .profile-name {
-  font-size: 1.8rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--frost-white);
+  font-family: "Pacifico", cursive;
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-bottom: 0px;
 }
 
 .profile-id {
-  font-family: var(--font-mono);
   font-size: 0.9rem;
-  color: var(--fog-blue);
-  opacity: 0.8;
+  color: var(--text-secondary);
+  background: rgba(0,0,0,0.04);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 500;
 }
 
-.profile-signature {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--frost-white);
-  opacity: 0.4;
-  font-style: italic;
-  max-width: 240px;
-  line-height: 1.4;
+.profile-bio {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
   white-space: pre-line;
 }
 
-/* ============ 磁贴 B — 状态 ============ */
-.tile-status {
+/* 侧边栏小组件 */
+.sidebar-widgets {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4px;
+  gap: 16px;
 }
 
-.status-number {
-  font-family: var(--font-mono);
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: var(--electric-cyan);
-  line-height: 1;
-}
-
-.status-label {
-  font-size: 0.8rem;
-  color: var(--fog-blue);
-  opacity: 0.7;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-/* ============ 磁贴 C — 情绪气象 ============ */
-.tile-mood {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-}
-
-.mood-header {
+.widget {
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: var(--radius-md);
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-}
-
-.mood-emoji {
-  font-size: 1.4rem;
-}
-
-.mood-weather {
-  color: var(--frost-white);
-  font-weight: 500;
-}
-
-.mood-text {
-  font-family: var(--font-handwriting);
-  font-size: 0.95rem;
-  color: var(--soft-pink);
-  opacity: 0.9;
-  padding-left: 4px;
-}
-
-/* ============ 磁贴 D — 关于我 ============ */
-.tile-about {
-  display: flex;
-  flex-direction: column;
   gap: 14px;
+  transition: background 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+.widget:hover {
+  background: rgba(255,255,255,0.6);
 }
 
-.tile-title {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.tile-title h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--frost-white);
-}
-
-.tile-title span {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--fog-blue);
-  opacity: 0.5;
-}
-
-.tile-divider {
-  width: 40px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--electric-cyan), transparent);
-  border: none;
-  margin: 0;
-}
-
-.about-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.about-list li {
-  font-size: 0.88rem;
-  color: var(--frost-white);
-  opacity: 0.75;
-  padding-left: 16px;
-  position: relative;
-  line-height: 1.6;
-}
-
-.about-list li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--electric-cyan);
-  opacity: 0.6;
-}
-
-.about-quote {
-  font-family: var(--font-handwriting);
-  font-size: 1rem;
-  color: var(--electric-cyan);
-  opacity: 0.85;
-  line-height: 1.8;
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-/* ============ 磁贴 E — 标签墙 ============ */
-.tile-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  border: 1px solid;
-  transition: all 0.2s ease;
-}
-
-.tag:hover {
-  transform: scale(1.05);
-}
-
-.tag-cyan {
-  background: rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.3);
-  color: var(--electric-cyan);
-}
-
-.tag-pink {
-  background: rgba(212, 160, 185, 0.1);
-  border-color: rgba(212, 160, 185, 0.3);
-  color: var(--soft-pink);
-}
-
-.tag-blue {
-  background: rgba(126, 184, 212, 0.1);
-  border-color: rgba(126, 184, 212, 0.3);
-  color: var(--fog-blue);
-}
-
-.tag-purple {
-  background: rgba(160, 120, 210, 0.1);
-  border-color: rgba(160, 120, 210, 0.3);
-  color: #c0a0e8;
-}
-
-/* ============ 磁贴 F — 喜欢的东西 ============ */
-.tile-favorites {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.favorite-section {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.favorite-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.favorite-emoji {
-  font-size: 1.1rem;
-}
-
-.favorite-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--frost-white);
-}
-
-.favorite-desc {
-  font-size: 0.82rem;
-  color: var(--frost-white);
-  opacity: 0.6;
-  padding-left: 28px;
-  font-style: italic;
-}
-
-.favorite-detail {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--fog-blue);
-  opacity: 0.5;
-  padding-left: 28px;
-}
-
-/* ============ 磁贴 G — 坐标 ============ */
-.tile-location {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-}
-
-.location-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  color: var(--frost-white);
-  opacity: 0.7;
-}
-
-.location-cities {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--frost-white);
-  padding-left: 2px;
-}
-
-.location-quote {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--electric-cyan);
-  opacity: 0.5;
-  font-style: italic;
-}
-
-/* ============ 磁贴 H — 语言 ============ */
-.tile-languages {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.lang-icon {
-  font-size: 1.2rem;
-  margin-bottom: 4px;
-}
-
-.lang-item {
-  font-size: 0.75rem;
-  color: var(--frost-white);
-  opacity: 0.7;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.lang-check {
-  color: var(--electric-cyan);
-  font-size: 0.7rem;
-}
-
-/* ============ 磁贴 N — 此刻在听 ============ */
-.tile-nowplaying {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-
-.nowplaying-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nowplaying-emoji {
-  font-size: 1.3rem;
-}
-
-.nowplaying-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--frost-white);
-}
-
-.nowplaying-text {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--soft-pink);
-  opacity: 0.7;
-  font-style: italic;
-  padding-left: 4px;
-}
-
-/* ============ 磁贴 O — 小小心愿 ============ */
-.tile-wish {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 6px;
-}
-
-.wish-emoji {
-  font-size: 1.6rem;
-}
-
-.wish-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--frost-white);
-  opacity: 0.8;
-}
-
-.wish-text {
-  font-family: var(--font-handwriting);
-  font-size: 0.78rem;
-  color: var(--soft-pink);
-  opacity: 0.6;
-  line-height: 1.4;
-}
-
-/* ============ 磁贴 P — 技术栈 ============ */
-.tile-techstack {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-}
-
-.techstack-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-}
-
-.techstack-label {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--frost-white);
-}
-
-.techstack-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.techstack-tag {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 3px 10px;
+.widget-icon-box {
+  width: 42px;
+  height: 42px;
+  background: rgba(255,255,255,0.8);
   border-radius: 12px;
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.2);
-  color: var(--electric-cyan);
-}
-
-/* ============ 磁贴 I — 项目 ============ */
-.tile-projects {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.project-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: all 0.2s ease;
-}
-
-.project-item:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(0, 240, 255, 0.15);
-}
-
-.project-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.project-emoji {
-  font-size: 1rem;
-}
-
-.project-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--frost-white);
-}
-
-.project-desc {
-  font-size: 0.78rem;
-  color: var(--frost-white);
-  opacity: 0.5;
-  padding-left: 28px;
-}
-
-.project-link {
-  font-family: var(--font-mono);
-  font-size: 0.73rem;
-  padding-left: 28px;
-}
-
-/* ============ 磁贴 J — 联系方式 ============ */
-.tile-contact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
-}
-
-.contact-emoji {
-  font-size: 0.95rem;
-  width: 22px;
-  text-align: center;
-}
-
-.contact-label {
-  color: var(--frost-white);
-  opacity: 0.5;
-  min-width: 50px;
-}
-
-.contact-value {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--fog-blue);
-}
-
-.contact-quote {
-  font-family: var(--font-handwriting);
-  font-size: 0.88rem;
-  color: var(--soft-pink);
-  opacity: 0.6;
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-/* ============ 磁贴 K — 设备 ============ */
-.tile-devices {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.device-icon {
-  font-size: 1.5rem;
-  transition: transform 0.2s ease;
-}
-
-.device-icon:hover {
-  transform: scale(1.2);
-}
-
-/* ============ 磁贴 L — 底部标语 ============ */
-.tile-slogan {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  min-height: 80px;
-}
-
-.slogan-text {
-  font-family: var(--font-handwriting);
-  font-size: 1.35rem;
-  color: var(--soft-pink);
-  letter-spacing: 2px;
-  line-height: 1.8;
-  animation: breatheText 4s ease-in-out infinite;
-}
-
-/* ============ 磁贴 M — 脚注 ============ */
-.tile-footer {
-  grid-column: span 6;
-  text-align: center;
-  padding: 12px 20px;
-  background: transparent;
-  border: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
-.tile-footer::before {
-  display: none;
-}
-
-.tile-footer:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: transparent;
-}
-
-.footer-text {
-  font-size: 0.7rem;
-  color: var(--frost-white);
-  opacity: 0.2;
-  letter-spacing: 1px;
-}
-
-/* ============ 动画 ============ */
-@keyframes breathe {
-  0%, 100% { 
-    opacity: 1; 
-    box-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
-  }
-  50% { 
-    opacity: 0.5; 
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
-  }
-}
-
-@keyframes breatheText {
-  0%, 100% { opacity: 0.85; }
-  50% { opacity: 0.55; }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.tile {
-  animation: fadeInUp 0.6s ease-out both;
-}
-
-.tile:nth-child(1) { animation-delay: 0.05s; }
-.tile:nth-child(2) { animation-delay: 0.1s; }
-.tile:nth-child(3) { animation-delay: 0.15s; }
-.tile:nth-child(4) { animation-delay: 0.2s; }
-.tile:nth-child(5) { animation-delay: 0.25s; }
-.tile:nth-child(6) { animation-delay: 0.3s; }
-.tile:nth-child(7) { animation-delay: 0.35s; }
-.tile:nth-child(8) { animation-delay: 0.4s; }
-.tile:nth-child(9) { animation-delay: 0.45s; }
-.tile:nth-child(10) { animation-delay: 0.5s; }
-.tile:nth-child(11) { animation-delay: 0.55s; }
-.tile:nth-child(12) { animation-delay: 0.6s; }
-.tile:nth-child(13) { animation-delay: 0.65s; }
-
-/* ============ 响应式设计优化 ============ */
-
-/* 中等平板断点 (901px - 1200px) 保持原6列布局 */
-@media (max-width: 1200px) {
-  .homepage-container {
-    padding: 32px 24px 20px;
-  }
-}
-
-/* 小平板断点 (769px - 900px) */
-@media (max-width: 900px) {
-  .homepage-container {
-    padding: 28px 20px 16px;
-  }
-
-  .tile-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  
-  .tile-3x2 { grid-column: span 2; grid-row: span 2; }
-  .tile-4x2 { grid-column: span 4; grid-row: span 2; }
-  .tile-2x2 { grid-column: span 2; grid-row: span 2; }
-  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
-  .tile-6x1 { grid-column: span 4; }
-  .tile-6x2 { grid-column: span 4; grid-row: span 2; }
-  .tile-footer { grid-column: span 4; }
-  
-  /* 调整小屏字体大小 */
-  .profile-name {
-    font-size: 1.6rem;
-  }
-  
-  .profile-signature {
-    font-size: 0.75rem;
-  }
-  
-  .tile-title h2 {
-    font-size: 1.2rem;
-  }
-  
-  .slogan-text {
-    font-size: 1.2rem;
-  }
-}
-
-/* 大手机/小平板断点 (601px - 768px) */
-@media (max-width: 768px) {
-  :root {
-    --grid-gap: 14px;
-  }
-  
-  .homepage-container {
-    padding: 24px 16px 16px;
-  }
-
-  .tile-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .tile-3x2 { grid-column: span 3; grid-row: span 1; }
-  .tile-1x1 { grid-column: span 1; grid-row: span 1; }
-  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
-  .tile-4x2 { grid-column: span 3; grid-row: span 1; }
-  .tile-2x2 { grid-column: span 2; grid-row: span 1; }
-  .tile-6x1 { grid-column: span 3; }
-  .tile-1x2 { grid-column: span 1; grid-row: span 1; }
-  .tile-footer { grid-column: span 3; }
-  
-  /* 优化触摸目标大小 */
-  .tag {
-    padding: 6px 16px;
-    min-height: 32px;
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .contact-item {
-    min-height: 36px;
-  }
-  
-  .project-item {
-    min-height: 70px;
-  }
-  
-  /* 调整小屏字体大小 */
-  .profile-name {
-    font-size: 1.4rem;
-  }
-  
-  .profile-id {
-    font-size: 0.85rem;
-  }
-  
-  .tile-title h2 {
-    font-size: 1.15rem;
-  }
-  
-  .slogan-text {
-    font-size: 1.1rem;
-  }
-}
-
-/* 手机断点 (481px - 600px) */
-@media (max-width: 600px) {
-  :root {
-    --grid-gap: 12px;
-    --tile-blur: 16px;
-    --tile-radius: 14px;
-  }
-  
-  .homepage-container {
-    padding: 20px 14px 14px;
-  }
-
-  .tile-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .tile-3x2 { grid-column: span 2; grid-row: span 1; }
-  .tile-1x1 { grid-column: span 1; grid-row: span 1; }
-  .tile-2x1 { grid-column: span 2; grid-row: span 1; }
-  .tile-4x2 { grid-column: span 2; grid-row: span 1; }
-  .tile-2x2 { grid-column: span 2; grid-row: span 1; }
-  .tile-6x1 { grid-column: span 2; }
-  .tile-1x2 { grid-column: span 1; grid-row: span 1; }
-  .tile-footer { grid-column: span 2; }
-
-  .tile-profile {
-    flex-direction: row;
-    text-align: left;
-    gap: 16px;
-  }
-
-  .avatar-wrapper {
-    width: 70px;
-    height: 70px;
-    flex-shrink: 0;
-  }
-
-  .profile-name {
-    font-size: 1.3rem;
-  }
-  
-  .profile-id {
-    font-size: 0.8rem;
-  }
-  
-  .profile-signature {
-    font-size: 0.7rem;
-  }
-
-  .tile {
-    padding: 16px;
-  }
-  
-  /* 减小部分字体大小 */
-  .status-number {
-    font-size: 2rem;
-  }
-  
-  .tile-title h2 {
-    font-size: 1.1rem;
-  }
-  
-  .tile-title span {
-    font-size: 0.75rem;
-  }
-  
-  .about-list li {
-    font-size: 0.82rem;
-  }
-  
-  .contact-item {
-    font-size: 0.78rem;
-  }
-  
-  .slogan-text {
-    font-size: 1rem;
-  }
-
-  .about-quote {
-    font-size: 0.88rem;
-  }
-}
-
-/* 小手机断点 (max-width: 480px) */
-@media (max-width: 480px) {
-  :root {
-    --grid-gap: 10px;
-    --tile-blur: 12px;
-    --tile-radius: 12px;
-  }
-  
-  .homepage-container {
-    padding: 16px 12px 12px;
-  }
-
-  .tile {
-    padding: 14px;
-  }
-  
-  .avatar-wrapper {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .profile-name {
-    font-size: 1.2rem;
-  }
-  
-  .profile-id {
-    font-size: 0.75rem;
-  }
-  
-  .profile-signature {
-    font-size: 0.65rem;
-  }
-  
-  .status-number {
-    font-size: 1.8rem;
-  }
-  
-  .tile-title h2 {
-    font-size: 1rem;
-  }
-  
-  .tile-title span {
-    font-size: 0.7rem;
-  }
-  
-  .about-list li {
-    font-size: 0.78rem;
-    line-height: 1.5;
-  }
-  
-  .slogan-text {
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-  
-  .about-quote {
-    font-size: 0.82rem;
-  }
-  
-  .contact-quote {
-    font-size: 0.78rem;
-  }
-  
-  /* 优化触摸目标 */
-  .tag {
-    padding: 5px 14px;
-    min-height: 30px;
-    font-size: 0.75rem;
-  }
-  
-  .contact-item {
-    min-height: 34px;
-    font-size: 0.75rem;
-  }
-  
-  .contact-emoji {
-    font-size: 0.9rem;
-  }
-  
-  .project-item {
-    min-height: 65px;
-    padding: 8px 10px;
-  }
-  
-  .project-name {
-    font-size: 0.85rem;
-  }
-  
-  .project-desc {
-    font-size: 0.72rem;
-  }
-}
-
-/* 超小手机断点 (max-width: 360px) */
-@media (max-width: 360px) {
-  :root {
-    --grid-gap: 8px;
-    --tile-radius: 10px;
-  }
-  
-  .homepage-container {
-    padding: 14px 10px 10px;
-  }
-
-  .tile-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .tile-3x2,
-  .tile-1x1,
-  .tile-2x1,
-  .tile-4x2,
-  .tile-2x2,
-  .tile-6x1,
-  .tile-1x2 {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-  
-  .tile-footer {
-    grid-column: span 1;
-  }
-  
-  .tile-profile {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-  
-  .avatar-wrapper {
-    width: 80px;
-    height: 80px;
-  }
-  
-  .profile-name {
-    font-size: 1.3rem;
-  }
-  
-  .profile-signature {
-    max-width: 100%;
-  }
-  
-  .tile {
-    padding: 12px;
-  }
-  
-  .slogan-text {
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-  
-  /* 标签换行优化 */
-  .tags-container {
-    gap: 6px;
-  }
-  
-  .tag {
-    font-size: 0.7rem;
-    padding: 4px 12px;
-  }
-}
-
-/* ============================================================
-   布局: 单列长页
-   ============================================================ */
-.layout-single {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-.layout-single .tile {
-  grid-column: unset !important;
-  grid-row: unset !important;
-}
-
-.single-hero {
-  display: flex;
-  justify-content: center;
-}
-
-.single-hero .tile {
-  width: 100%;
-}
-
-.single-section {
-  width: 100%;
-}
-
-.single-section .tile {
-  width: 100%;
-}
-
-.single-row {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-}
-
-.single-row .tile {
-  flex: 1;
-  min-width: 0;
-}
-
-/* 单列风格额外样式 */
-.ui-single .tile {
-  border-radius: 24px;
-  padding: 28px;
-}
-
-.ui-single .tile-profile {
-  padding: 48px 28px;
-}
-
-.ui-single .avatar-wrapper {
-  width: 120px;
-  height: 120px;
-}
-
-.ui-single .profile-name {
-  font-size: 2.2rem;
-}
-
-.ui-single .tile-slogan {
-  min-height: 100px;
-}
-
-/* ============================================================
-   布局: 左右分栏
-   ============================================================ */
-.layout-split {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.layout-split .tile {
-  grid-column: unset !important;
-  grid-row: unset !important;
-}
-
-.split-sidebar {
-  width: 280px;
+  font-size: 1.3rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
   flex-shrink: 0;
+}
+
+.widget-info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  position: sticky;
-  top: 20px;
+  overflow: hidden;
 }
 
-.split-sidebar .tile {
+.widget-title {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.widget-desc {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.marquee-box {
   width: 100%;
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
 }
 
-.split-main {
+/* ================= 右侧内容区 ================= */
+.dashboard-content {
   flex: 1;
-  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
-.split-main .tile {
-  width: 100%;
+.content-section {
+  padding: 36px;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.content-section:nth-child(2) { animation-delay: 0.1s; }
+.content-section:nth-child(3) { animation-delay: 0.2s; }
+.content-section:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.split-row {
+.section-heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 24px;
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 10px;
 }
 
-.split-row .tile {
-  flex: 1;
-  min-width: 0;
-}
-
-/* 分栏风格额外样式 */
-.ui-split .tile {
-  border-radius: 12px;
-}
-
-.ui-split .split-sidebar .tile-profile {
-  padding: 32px 20px;
-}
-
-.ui-split .split-sidebar .avatar-wrapper {
-  width: 90px;
-  height: 90px;
-}
-
-@media (max-width: 768px) {
-  .layout-split {
-    flex-direction: column;
-  }
-  .split-sidebar {
-    width: 100%;
-    position: static;
-  }
-}
-
-/* ============================================================
-   布局: 瀑布流
-   ============================================================ */
-.layout-masonry {
+.heading-icon {
+  background: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.layout-masonry .tile {
-  grid-column: unset !important;
-  grid-row: unset !important;
-}
-
-.masonry-col {
-  flex: 1;
-  min-width: 240px;
+/* 列表内容 (关于我) */
+.feature-list {
+  list-style: none;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.masonry-col .tile {
-  width: 100%;
+.feature-list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 1.05rem;
 }
-
-.layout-masonry > .tile-slogan {
-  width: 100%;
-  flex-basis: 100%;
-}
-
-.layout-masonry > .tile-footer {
-  width: 100%;
-  flex-basis: 100%;
-}
-
-/* 瀑布流额外样式 */
-.ui-masonry .tile {
-  border-radius: 20px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.ui-masonry .tile:hover {
-  transform: scale(1.02);
-}
-
-@media (max-width: 600px) {
-  .layout-masonry {
-    flex-direction: column;
-  }
-  .masonry-col {
-    min-width: 100%;
-  }
-}
-
-/* ============================================================
-   UI 风格 1: 玻璃磁贴 (默认，无需额外覆盖)
-   ============================================================ */
-
-/* ============================================================
-   UI 风格 2: 新拟态 — 柔和凸起/凹陷效果
-   ============================================================ */
-.ui-neumorph .tile {
-  background: var(--bg-secondary);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: none;
-  border-radius: 20px;
-  box-shadow:
-    6px 6px 16px rgba(0, 0, 0, 0.35),
-    -6px -6px 16px rgba(255, 255, 255, 0.04);
-}
-
-.ui-neumorph .tile::before {
-  background: none;
-}
-
-.ui-neumorph .tile:hover {
-  transform: translateY(-2px);
-  border-color: transparent;
-  box-shadow:
-    8px 8px 20px rgba(0, 0, 0, 0.4),
-    -8px -8px 20px rgba(255, 255, 255, 0.05),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-.ui-neumorph .avatar {
-  border-radius: 50%;
-  border: 3px solid var(--bg-secondary);
-  box-shadow:
-    4px 4px 10px rgba(0, 0, 0, 0.3),
-    -4px -4px 10px rgba(255, 255, 255, 0.03);
-}
-
-.ui-neumorph .tag {
-  border: none;
-  border-radius: 12px;
-  box-shadow:
-    3px 3px 8px rgba(0, 0, 0, 0.25),
-    -3px -3px 8px rgba(255, 255, 255, 0.03);
-}
-
-.ui-neumorph .techstack-tag {
-  border: none;
-  box-shadow:
-    2px 2px 6px rgba(0, 0, 0, 0.2),
-    -2px -2px 6px rgba(255, 255, 255, 0.02);
-}
-
-.ui-neumorph .project-item {
-  border: none;
-  border-radius: 14px;
-  box-shadow:
-    inset 3px 3px 8px rgba(0, 0, 0, 0.2),
-    inset -3px -3px 8px rgba(255, 255, 255, 0.02);
-}
-
-.ui-neumorph .tile-divider {
-  height: 3px;
-  border-radius: 2px;
-  background: var(--bg-primary);
-  box-shadow:
-    inset 1px 1px 3px rgba(0, 0, 0, 0.3),
-    inset -1px -1px 3px rgba(255, 255, 255, 0.02);
-  width: 60px;
-}
-
-.ui-neumorph .status-number {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* ============================================================
-   UI 风格 3: 赛博朋克 — 霓虹边框、扫描线、毛刺感
-   ============================================================ */
-.ui-cyberpunk .tile {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--electric-cyan);
-  border-radius: 2px;
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-}
-
-.ui-cyberpunk .tile::before {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.015) 2px,
-    rgba(255, 255, 255, 0.015) 4px
-  );
-  border-radius: 0;
-}
-
-.ui-cyberpunk .tile::after {
+.feature-list li::before {
   content: '';
   position: absolute;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--electric-cyan), transparent);
-  animation: scanLine 3s linear infinite;
-}
-
-@keyframes scanLine {
-  0% { top: 0; opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { top: 100%; opacity: 1; }
-}
-
-.ui-cyberpunk .tile:hover {
-  transform: none;
-  border-color: var(--soft-pink);
-  box-shadow:
-    0 0 10px var(--electric-cyan),
-    0 0 30px rgba(0, 240, 255, 0.15),
-    inset 0 0 20px rgba(0, 240, 255, 0.05);
-}
-
-.ui-cyberpunk .tile-title h2 {
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  text-shadow: 0 0 8px var(--electric-cyan);
-}
-
-.ui-cyberpunk .profile-name {
-  text-transform: uppercase;
-  letter-spacing: 6px;
-  text-shadow:
-    0 0 10px var(--electric-cyan),
-    0 0 20px rgba(0, 240, 255, 0.3);
-}
-
-.ui-cyberpunk .avatar {
-  border-radius: 2px;
-  border: 2px solid var(--electric-cyan);
-  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
-}
-
-.ui-cyberpunk .tag {
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.7rem;
-}
-
-.ui-cyberpunk .techstack-tag {
-  border-radius: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-color: var(--electric-cyan);
-  box-shadow: 0 0 6px rgba(0, 240, 255, 0.15);
-}
-
-.ui-cyberpunk .tile-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--electric-cyan);
-  box-shadow: 0 0 6px var(--electric-cyan);
-}
-
-.ui-cyberpunk .slogan-text {
-  text-transform: uppercase;
-  letter-spacing: 8px;
-  text-shadow: 0 0 15px var(--soft-pink);
-  font-family: var(--font-mono);
-}
-
-.ui-cyberpunk .status-number {
-  text-shadow: 0 0 12px var(--electric-cyan);
-}
-
-/* ============================================================
-   UI 风格 4: 极简线框 — 细边框、大留白、干净排版
-   ============================================================ */
-.ui-minimal .tile {
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 1px solid var(--tile-border);
-  border-radius: 0;
-  padding: 24px;
-}
-
-.ui-minimal .tile::before {
-  display: none;
-}
-
-.ui-minimal .tile:hover {
-  transform: none;
-  border-color: var(--frost-white);
-  box-shadow: none;
-}
-
-.ui-minimal .avatar {
-  border-radius: 0;
-  border: 1px solid var(--tile-border);
-}
-
-.ui-minimal .tag {
-  border-radius: 0;
-  background: transparent;
-}
-
-.ui-minimal .techstack-tag {
-  border-radius: 0;
-  background: transparent;
-}
-
-.ui-minimal .project-item {
-  border-radius: 0;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.ui-minimal .tile-divider {
-  width: 24px;
-  height: 1px;
-  background: var(--frost-white);
-  opacity: 0.3;
-}
-
-.ui-minimal .profile-name {
-  font-weight: 300;
-  letter-spacing: 6px;
-  font-size: 1.6rem;
-}
-
-.ui-minimal .tile-title h2 {
-  font-weight: 300;
-  letter-spacing: 3px;
-}
-
-.ui-minimal .slogan-text {
-  font-family: var(--font-sans);
-  font-weight: 200;
-  letter-spacing: 6px;
-  font-size: 1.1rem;
-}
-
-.ui-minimal .status-number {
-  font-weight: 200;
-  font-size: 3rem;
-}
-
-.ui-minimal .mood-text,
-.ui-minimal .about-quote,
-.ui-minimal .contact-quote,
-.ui-minimal .wish-text {
-  font-family: var(--font-sans);
-  font-style: italic;
-  font-weight: 300;
-}
-
-/* ============================================================
-   UI 风格 5: 复古像素 — 粗边框、像素感圆角、怀旧阴影
-   ============================================================ */
-.ui-retro .tile {
-  background: var(--bg-secondary);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 3px solid var(--tile-border);
-  border-radius: 0;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
-  image-rendering: pixelated;
-}
-
-.ui-retro .tile::before {
-  display: none;
-}
-
-.ui-retro .tile:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
-  border-color: var(--electric-cyan);
-}
-
-.ui-retro .avatar {
-  border-radius: 0;
-  border: 3px solid var(--tile-border);
-  image-rendering: pixelated;
-}
-
-.ui-retro .tag {
-  border-radius: 0;
-  border-width: 2px;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-}
-
-.ui-retro .techstack-tag {
-  border-radius: 0;
-  border-width: 2px;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
-}
-
-.ui-retro .project-item {
-  border-radius: 0;
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
-}
-
-.ui-retro .tile-divider {
-  width: 48px;
-  height: 3px;
-  background: var(--electric-cyan);
-  border-radius: 0;
-}
-
-.ui-retro .profile-name {
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-.ui-retro .tile-title h2 {
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.ui-retro .slogan-text {
-  font-family: var(--font-mono);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  font-size: 1.1rem;
-}
-
-.ui-retro .status-number {
-  font-size: 2.8rem;
-  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
-}
-
-.ui-retro .theme-switcher,
-.ui-retro .switcher-group .theme-switcher {
-  border-radius: 0;
-  border-width: 2px;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
-}
-
-/* ============ 滚动条 ============ */
-::-webkit-scrollbar {
+  top: 10px;
   width: 6px;
+  height: 6px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+.quote-block {
+  background: rgba(255,255,255,0.4);
+  padding: 18px 24px;
+  border-radius: 16px;
+  font-style: italic;
+  color: var(--text-secondary);
+  border-left: 4px solid var(--accent-color);
+  margin: 0 0 24px 0;
+  font-size: 0.95rem;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+.apple-tag {
+  background: rgba(255,255,255,0.6);
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+.apple-tag.highlight {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
 }
 
-/* ============ 选中文字 ============ */
-::selection {
-  background: rgba(0, 240, 255, 0.2);
-  color: var(--frost-white);
+/* 喜欢的事物列表 */
+.list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: rgba(255,255,255,0.3);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.item-icon-box {
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  flex-shrink: 0;
+}
+
+.item-content h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+}
+.item-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* 项目卡片 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.4);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.6);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.project-card:hover {
+  background: rgba(255,255,255,0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.proj-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.proj-details h4 {
+  margin: 0 0 2px 0;
+  font-size: 1.05rem;
+}
+.proj-details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.proj-arrow {
+  position: absolute;
+  right: 20px;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  opacity: 0.5;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.project-card:hover .proj-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* 联系方式 */
+.contact-body {
+  text-align: center;
+}
+
+.contact-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 12px 24px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+.action-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* 页脚 */
+.dashboard-footer {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.footer-slogan {
+  margin-bottom: 8px;
+  font-style: italic;
+}
+.footer-copyright {
+  opacity: 0.7;
 }
