@@ -1,158 +1,204 @@
-import React, { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import AboutSection from './components/AboutSection';
+import AppBackground from './components/AppBackground';
+import ContactSection from './components/ContactSection';
+import CustomContextMenu from './components/CustomContextMenu';
+import FavoritesSection from './components/FavoritesSection';
+import MoodCard from './components/MoodCard';
+import {
+  LocationMini,
+  NowPlayingMini,
+  StatusMini,
+  TechStackMini,
+  WishMini,
+} from './components/MiniCards';
+import PrinterLoader from './components/PrinterLoader';
+import ProfileCard from './components/ProfileCard';
+import ProjectsSection from './components/ProjectsSection';
 import config from './siteConfig';
-import './styles/index.css';
+
+const THEME_KEY = 'bento-aurora-theme';
+const moodVariants = config.mood.moods || [];
 
 export default function App() {
+  const menuTimerRef = useRef(null);
+  const loaderTimerRef = useRef(null);
+
+  const [themeMode, setThemeMode] = useState(() => {
+    if (typeof window === 'undefined') return 'dark';
+    const saved = window.localStorage.getItem(THEME_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  const [isWeightlessMode, setIsWeightlessMode] = useState(false);
+  const [contextMenu, setContextMenu] = useState(null);
+  const [printerLoader, setPrinterLoader] = useState({
+    title: '正在铺好小窝',
+    detail: '把光、云朵和软软的气泡摆好……',
+  });
+
   const [currentMood, setCurrentMood] = useState(config.mood);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    document.documentElement.setAttribute('data-theme', themeMode);
+    window.localStorage.setItem(THEME_KEY, themeMode);
+  }, [themeMode]);
+
+  useEffect(() => {
+    loaderTimerRef.current = window.setTimeout(() => {
+      setPrinterLoader(null);
+    }, 1700);
+
+    return () => {
+      if (loaderTimerRef.current) window.clearTimeout(loaderTimerRef.current);
+      if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
+    };
+  }, []);
+
+  const closeContextMenu = useCallback(() => {
+    if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
+
+    setContextMenu((current) => {
+      if (!current || current.isClosing) return current;
+      return { ...current, isClosing: true };
+    });
+
+    menuTimerRef.current = window.setTimeout(() => {
+      setContextMenu(null);
+    }, 180);
+  }, []);
+
+  const triggerPrinterLoader = useCallback((title, detail, duration = 1450) => {
+    if (loaderTimerRef.current) window.clearTimeout(loaderTimerRef.current);
+
+    setPrinterLoader({ title, detail });
+    loaderTimerRef.current = window.setTimeout(() => {
+      setPrinterLoader(null);
+    }, duration);
+  }, []);
+
+  useEffect(() => {
+    if (!contextMenu) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeContextMenu();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', closeContextMenu);
+    window.addEventListener('scroll', closeContextMenu, true);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', closeContextMenu);
+      window.removeEventListener('scroll', closeContextMenu, true);
+    };
+  }, [contextMenu, closeContextMenu]);
+
+  const handleContextMenu = useCallback((event) => {
+    event.preventDefault();
+    if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
+    setContextMenu({ x: event.clientX, y: event.clientY, isClosing: false });
+  }, []);
+
+  const shuffleMood = useCallback(() => {
+    if (!moodVariants.length) return;
+    const next = moodVariants[Math.floor(Math.random() * moodVariants.length)];
+    setCurrentMood(next);
+  }, [moodVariants]);
+
+  const resetMood = useCallback(() => {
+    setCurrentMood(config.mood);
+  }, []);
+
+  const toggleThemeMode = useCallback(() => {
+    const next = themeMode === 'dark' ? 'light' : 'dark';
+    triggerPrinterLoader(
+      next === 'dark' ? '正在换上夜间的被子' : '正在拉开晨光窗帘',
+      next === 'dark'
+        ? '把星星和软软的暗色铺好……'
+        : '让阳光、奶油和气泡涌进来……',
+    );
+    setThemeMode(next);
+    closeContextMenu();
+  }, [themeMode, triggerPrinterLoader, closeContextMenu]);
+
+  const toggleWeightlessMode = useCallback(() => {
+    setIsWeightlessMode((v) => !v);
+    closeContextMenu();
+  }, [closeContextMenu]);
+
+  const disableWeightlessMode = useCallback(() => {
+    setIsWeightlessMode(false);
+    closeContextMenu();
+  }, [closeContextMenu]);
+
+  const activeLangs = config.languages.filter((l) => l.check);
+
   return (
-    <div className="apple-dashboard">
-      {/* 极简网格渐变背景 (Mesh Gradient) */}
-      <div className="aurora-bg">
-        <div className="aurora-blob blob-1"></div>
-        <div className="aurora-blob blob-2"></div>
-        <div className="aurora-blob blob-3"></div>
+    <div
+      className={`app-shell${isWeightlessMode ? ' weightless-mode' : ''}`}
+      onContextMenu={handleContextMenu}
+    >
+      {printerLoader && (
+        <PrinterLoader title={printerLoader.title} detail={printerLoader.detail} />
+      )}
+
+      <AppBackground />
+
+      <div className="orbit-hint">
+        <span className="orbit-hint-dot" />
+        右键打开小菜单
       </div>
 
-      <div className="dashboard-container">
-        
-        {/* ================= 左侧：个人中控台 (Sidebar) ================= */}
-        <aside className="dashboard-sidebar glass-panel">
-          <div className="profile-section">
-            <div className="avatar-wrapper">
-              <img src={config.profile.avatar} alt="avatar" className="avatar-img" />
-              {config.profile.isOnline && <div className="status-dot"></div>}
-            </div>
-            <h1 className="profile-name">{config.profile.name}</h1>
-            <span className="profile-id">{config.profile.id}</span>
-            <p className="profile-bio">{config.profile.signature}</p>
-          </div>
+      {isWeightlessMode && (
+        <div className="weightless-banner">
+          <span>🫧</span> 失重中
+        </div>
+      )}
 
-          <div className="sidebar-widgets">
-            {/* 心情组件 */}
-            <div className="widget" onMouseEnter={() => {
-              if (config.mood.moods) {
-                setCurrentMood(config.mood.moods[Math.floor(Math.random() * config.mood.moods.length)]);
-              }
-            }} onMouseLeave={() => setCurrentMood(config.mood)}>
-              <div className="widget-icon-box">{currentMood.emoji}</div>
-              <div className="widget-info">
-                <span className="widget-title">状态 · {currentMood.weather}</span>
-                <span className="widget-desc">{currentMood.text}</span>
-              </div>
-            </div>
+      <div className="bento-grid">
+        <ProfileCard
+          profile={config.profile}
+          languages={activeLangs}
+          devices={config.devices}
+          onShuffleMood={shuffleMood}
+          onResetMood={resetMood}
+        />
 
-            {/* 音乐组件 */}
-            <div className="widget">
-              <div className="widget-icon-box">{config.nowPlaying.emoji}</div>
-              <div className="widget-info">
-                <span className="widget-title">{config.nowPlaying.label}</span>
-                <div className="marquee-box">
-                  {/* eslint-disable-next-line jsx-a11y/no-distracting-elements */}
-                  <marquee scrollamount="3">{config.nowPlaying.text}</marquee>
-                </div>
-              </div>
-            </div>
+        <MoodCard mood={currentMood} onShuffle={shuffleMood} />
+        <StatusMini status={config.status} />
+        <NowPlayingMini nowPlaying={config.nowPlaying} />
+        <WishMini wish={config.wish} />
+        <TechStackMini techStack={config.techStack} />
+        <LocationMini location={config.location} />
 
-            {/* 位置组件 */}
-            <div className="widget">
-              <div className="widget-icon-box">{config.location.emoji}</div>
-              <div className="widget-info">
-                <span className="widget-title">{config.location.label}</span>
-                <span className="widget-desc">{config.location.cities}</span>
-              </div>
-            </div>
-          </div>
-        </aside>
+        <AboutSection about={config.about} tags={config.tags} techStack={config.techStack} />
+        <FavoritesSection favorites={config.favorites} />
+        <ProjectsSection projects={config.projects} />
+        <ContactSection contact={config.contact} />
 
-        {/* ================= 右侧：内容信息流 (Main Content) ================= */}
-        <main className="dashboard-content">
-          
-          {/* 关于我 */}
-          <section className="content-section glass-panel">
-            <h2 className="section-heading">
-              <span className="heading-icon">📝</span> {config.about.title}
-            </h2>
-            <div className="section-body">
-              <ul className="feature-list">
-                {config.about.items.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-              <blockquote className="quote-block">{config.about.quote}</blockquote>
-              
-              <div className="tags-row">
-                <span className="apple-tag highlight">{config.status.number}</span>
-                {config.tags.map((tag, i) => (
-                  <span key={i} className="apple-tag">{tag.text}</span>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 喜欢的事物 */}
-          <section className="content-section glass-panel">
-            <h2 className="section-heading">
-              <span className="heading-icon">🌟</span> {config.favorites.title}
-            </h2>
-            <div className="list-grid">
-              {config.favorites.sections.map((fav, i) => (
-                <div className="list-item" key={i}>
-                  <div className="item-icon-box">{fav.emoji}</div>
-                  <div className="item-content">
-                    <h3>{fav.label}</h3>
-                    <p>{fav.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* 项目作品 */}
-          <section className="content-section glass-panel">
-            <h2 className="section-heading">
-              <span className="heading-icon">🎀</span> {config.projects.title}
-            </h2>
-            <div className="card-grid">
-              {config.projects.items.map((proj, i) => (
-                <a href={proj.link} target="_blank" rel="noreferrer" className="project-card" key={i}>
-                  <div className="proj-icon">{proj.emoji}</div>
-                  <div className="proj-details">
-                    <h4>{proj.name}</h4>
-                    <p>{proj.description}</p>
-                  </div>
-                  <div className="proj-arrow">↗</div>
-                </a>
-              ))}
-            </div>
-          </section>
-
-          {/* 联系方式 */}
-          <section className="content-section glass-panel">
-            <h2 className="section-heading">
-              <span className="heading-icon">💌</span> {config.contact.title}
-            </h2>
-            <div className="section-body contact-body">
-              <p className="contact-text">{config.contact.quote}</p>
-              <div className="action-buttons">
-                {config.contact.items.map((item, i) => (
-                  <a href={item.link} target="_blank" rel="noreferrer" className="action-btn" key={i}>
-                    <span className="btn-icon">{item.emoji}</span>
-                    <span className="btn-text">{item.label}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 页脚 */}
-          <footer className="dashboard-footer">
-            <p className="footer-slogan">{config.slogan}</p>
-            <p className="footer-copyright">{config.footer}</p>
-          </footer>
-
-        </main>
+        <footer className="bento-card bento-card--full site-footer">
+          <p className="footer-slogan">{config.slogan}</p>
+          <p className="footer-copy">{config.footer}</p>
+        </footer>
       </div>
+
+      {contextMenu && (
+        <CustomContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          isClosing={contextMenu.isClosing}
+          isWeightlessMode={isWeightlessMode}
+          themeMode={themeMode}
+          onToggleWeightless={toggleWeightlessMode}
+          onToggleTheme={toggleThemeMode}
+          onDisableWeightless={disableWeightlessMode}
+          onClose={closeContextMenu}
+        />
+      )}
     </div>
   );
 }

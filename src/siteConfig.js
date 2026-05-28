@@ -115,7 +115,7 @@ const siteConfig = {
     items: [
       {
         emoji: '🎨',
-        name: 'VItePress Curve for Sy',
+        name: 'VitePress Curve for Sy',
         description: 'VitePress 主题',
         link: 'https://github.com/Lightly20110815/vitepress-theme-curve',
         linkText: 'GitHub',
@@ -137,7 +137,7 @@ const siteConfig = {
       {
         emoji: '💻',
         name: '代码项目',
-        description: '用Vite和Cpp拼世界的另一种温柔方式',
+        description: '用 Vite 和 C++ 拼世界的另一种温柔方式',
         link: 'https://github.com/Lightly20110815',
         linkText: 'GitHub',
       },
@@ -193,37 +193,6 @@ const siteConfig = {
   // ========== 脚注 M ==========
   footer: '© 2026  ·  这里是我不会丢的地方  ·  Sy Yann',
 
-  // ========== 主题配置 ==========
-  theme: {
-    // 主色调
-    bgPrimary: '#0a0e1a',        // 深蓝黑底色
-    bgSecondary: '#0f1428',      // 稍浅的背景
-    // 辅色
-    fogBlue: '#7eb8d4',          // 雾蓝
-    frostWhite: '#e8edf2',       // 霜白
-    softPink: '#d4a0b9',         // 柔粉
-    // 强调色
-    electricCyan: '#00f0ff',     // 电光青
-    // 磁贴
-    tileBg: 'rgba(255, 255, 255, 0.08)',      // 磁贴背景
-    tileBorder: 'rgba(255, 255, 255, 0.12)',   // 磁贴边框
-    tileBlur: '20px',                          // 毛玻璃模糊度
-    tileRadius: '16px',                        // 磁贴圆角
-    // 网格
-    gridGap: '16px',             // 磁贴间距
-    gridColumns: 6,              // 列数
-    maxWidth: '1200px',          // 最大宽度
-  },
-
-  // ========== 动画配置 ==========
-  animation: {
-    enableParticles: true,       // 是否启用粒子背景
-    particleCount: 50,           // 粒子数量
-    enableBreathing: true,       // 是否启用呼吸灯
-    breathingDuration: 2,        // 呼吸灯周期(秒)
-    enableHoverFloat: true,      // 是否启用悬浮效果
-    hoverFloatDistance: 4,       // 悬浮距离(px)
-  },
 }
 
 export default siteConfig
