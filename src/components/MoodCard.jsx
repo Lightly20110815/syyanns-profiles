@@ -1,15 +1,36 @@
-export default function MoodCard({ mood, onShuffle }) {
+import React, { useState } from 'react';
+
+function MoodCard({ mood, status }) {
+  const [currentMood, setCurrentMood] = useState(mood);
+
+  const handleMouseEnter = () => {
+    if (mood.moods && mood.moods.length > 0) {
+      const randomIndex = Math.floor(Math.random() * mood.moods.length);
+      setCurrentMood(mood.moods[randomIndex]);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCurrentMood(mood);
+  };
+
   return (
-    <div className="bento-card mood-card" onClick={onShuffle} title="点击切换心情">
-      <div className="bento-card__title">
-        情绪气象 <span className="bento-card__title-accent">✦</span>
+    <div 
+      className="glass-card flex-row items-center gap-4" 
+      style={{ height: '100%', cursor: 'pointer' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="flex-col justify-center items-center" style={{ minWidth: '80px', borderRight: '1px solid var(--card-border)', paddingRight: '1rem' }}>
+        <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: 1, color: 'var(--accent-pink)' }}>{status.number}</div>
+        <div className="text-sm font-bold text-muted">{status.label}</div>
       </div>
-      <div>
-        <div className="mood-emoji">{mood.emoji}</div>
-        <div className="mood-weather">{mood.weather}</div>
-        <div className="mood-text">{mood.text}</div>
+      <div className="flex-col justify-center gap-2 flex-1">
+        <div className="text-2xl">{currentMood.emoji} {currentMood.weather}</div>
+        <div className="text-sm text-muted">{currentMood.text}</div>
       </div>
-      <div className="mood-hint">点一下换心情</div>
     </div>
   );
 }
+
+export default MoodCard;

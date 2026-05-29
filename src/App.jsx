@@ -1,204 +1,81 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import AboutSection from './components/AboutSection';
-import AppBackground from './components/AppBackground';
-import ContactSection from './components/ContactSection';
-import CustomContextMenu from './components/CustomContextMenu';
-import FavoritesSection from './components/FavoritesSection';
-import MoodCard from './components/MoodCard';
-import {
-  LocationMini,
-  NowPlayingMini,
-  StatusMini,
-  TechStackMini,
-  WishMini,
-} from './components/MiniCards';
-import PrinterLoader from './components/PrinterLoader';
+import React, { useState, useEffect } from 'react';
+import siteConfig from './siteConfig';
+import ThemeToggle from './components/ThemeToggle';
 import ProfileCard from './components/ProfileCard';
-import ProjectsSection from './components/ProjectsSection';
-import config from './siteConfig';
+import MoodCard from './components/MoodCard';
+import AboutCard from './components/AboutCard';
+import ProjectsCard from './components/ProjectsCard';
+import TagsCard from './components/TagsCard';
+import ContactCard from './components/ContactCard';
+import FavoritesCard from './components/FavoritesCard';
+import MagicEffects from './components/MagicEffects';
 
-const THEME_KEY = 'bento-aurora-theme';
-const moodVariants = config.mood.moods || [];
+function detectTheme() {
+  const stored = localStorage.getItem('theme');
+  if (stored === 'day' || stored === 'night') return stored;
+  const hour = new Date().getHours();
+  return (hour >= 6 && hour < 18) ? 'day' : 'night';
+}
 
-export default function App() {
-  const menuTimerRef = useRef(null);
-  const loaderTimerRef = useRef(null);
-
-  const [themeMode, setThemeMode] = useState(() => {
-    if (typeof window === 'undefined') return 'dark';
-    const saved = window.localStorage.getItem(THEME_KEY);
-    if (saved === 'light' || saved === 'dark') return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-
-  const [isWeightlessMode, setIsWeightlessMode] = useState(false);
-  const [contextMenu, setContextMenu] = useState(null);
-  const [printerLoader, setPrinterLoader] = useState({
-    title: '正在铺好小窝',
-    detail: '把光、云朵和软软的气泡摆好……',
-  });
-
-  const [currentMood, setCurrentMood] = useState(config.mood);
+function App() {
+  const [theme, setTheme] = useState(detectTheme);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    document.documentElement.setAttribute('data-theme', themeMode);
-    window.localStorage.setItem(THEME_KEY, themeMode);
-  }, [themeMode]);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
-  useEffect(() => {
-    loaderTimerRef.current = window.setTimeout(() => {
-      setPrinterLoader(null);
-    }, 1700);
-
-    return () => {
-      if (loaderTimerRef.current) window.clearTimeout(loaderTimerRef.current);
-      if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
-    };
-  }, []);
-
-  const closeContextMenu = useCallback(() => {
-    if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
-
-    setContextMenu((current) => {
-      if (!current || current.isClosing) return current;
-      return { ...current, isClosing: true };
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next = prev === 'day' ? 'night' : 'day';
+      localStorage.setItem('theme', next);
+      return next;
     });
-
-    menuTimerRef.current = window.setTimeout(() => {
-      setContextMenu(null);
-    }, 180);
-  }, []);
-
-  const triggerPrinterLoader = useCallback((title, detail, duration = 1450) => {
-    if (loaderTimerRef.current) window.clearTimeout(loaderTimerRef.current);
-
-    setPrinterLoader({ title, detail });
-    loaderTimerRef.current = window.setTimeout(() => {
-      setPrinterLoader(null);
-    }, duration);
-  }, []);
-
-  useEffect(() => {
-    if (!contextMenu) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') closeContextMenu();
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('resize', closeContextMenu);
-    window.addEventListener('scroll', closeContextMenu, true);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('resize', closeContextMenu);
-      window.removeEventListener('scroll', closeContextMenu, true);
-    };
-  }, [contextMenu, closeContextMenu]);
-
-  const handleContextMenu = useCallback((event) => {
-    event.preventDefault();
-    if (menuTimerRef.current) window.clearTimeout(menuTimerRef.current);
-    setContextMenu({ x: event.clientX, y: event.clientY, isClosing: false });
-  }, []);
-
-  const shuffleMood = useCallback(() => {
-    if (!moodVariants.length) return;
-    const next = moodVariants[Math.floor(Math.random() * moodVariants.length)];
-    setCurrentMood(next);
-  }, [moodVariants]);
-
-  const resetMood = useCallback(() => {
-    setCurrentMood(config.mood);
-  }, []);
-
-  const toggleThemeMode = useCallback(() => {
-    const next = themeMode === 'dark' ? 'light' : 'dark';
-    triggerPrinterLoader(
-      next === 'dark' ? '正在换上夜间的被子' : '正在拉开晨光窗帘',
-      next === 'dark'
-        ? '把星星和软软的暗色铺好……'
-        : '让阳光、奶油和气泡涌进来……',
-    );
-    setThemeMode(next);
-    closeContextMenu();
-  }, [themeMode, triggerPrinterLoader, closeContextMenu]);
-
-  const toggleWeightlessMode = useCallback(() => {
-    setIsWeightlessMode((v) => !v);
-    closeContextMenu();
-  }, [closeContextMenu]);
-
-  const disableWeightlessMode = useCallback(() => {
-    setIsWeightlessMode(false);
-    closeContextMenu();
-  }, [closeContextMenu]);
-
-  const activeLangs = config.languages.filter((l) => l.check);
+  };
 
   return (
-    <div
-      className={`app-shell${isWeightlessMode ? ' weightless-mode' : ''}`}
-      onContextMenu={handleContextMenu}
-    >
-      {printerLoader && (
-        <PrinterLoader title={printerLoader.title} detail={printerLoader.detail} />
-      )}
-
-      <AppBackground />
-
-      <div className="orbit-hint">
-        <span className="orbit-hint-dot" />
-        右键打开小菜单
-      </div>
-
-      {isWeightlessMode && (
-        <div className="weightless-banner">
-          <span>🫧</span> 失重中
-        </div>
-      )}
-
+    <div className="app-container flex-col gap-4">
+      <ThemeToggle theme={theme} onToggle={toggleTheme} />
+      <MagicEffects />
       <div className="bento-grid">
-        <ProfileCard
-          profile={config.profile}
-          languages={activeLangs}
-          devices={config.devices}
-          onShuffleMood={shuffleMood}
-          onResetMood={resetMood}
-        />
+        {/* Row 1 */}
+        <div className="col-span-2 row-span-2 md-col-span-3 sm-col-span-2">
+          <ProfileCard profile={siteConfig.profile} />
+        </div>
+        <div className="col-span-2 row-span-1 md-col-span-2 sm-col-span-2">
+          <MoodCard mood={siteConfig.mood} status={siteConfig.status} />
+        </div>
+        <div className="col-span-1 row-span-1 md-col-span-1 sm-col-span-1">
+          <TagsCard tags={siteConfig.tags} />
+        </div>
+        <div className="glass-card flex-col justify-center items-center gap-2 col-span-1 row-span-1 md-col-span-1 sm-col-span-1">
+           <div className="text-4xl">{siteConfig.location.emoji}</div>
+           <div className="font-bold">{siteConfig.location.label}</div>
+           <div className="text-sm text-muted text-center">{siteConfig.location.cities}</div>
+        </div>
 
-        <MoodCard mood={currentMood} onShuffle={shuffleMood} />
-        <StatusMini status={config.status} />
-        <NowPlayingMini nowPlaying={config.nowPlaying} />
-        <WishMini wish={config.wish} />
-        <TechStackMini techStack={config.techStack} />
-        <LocationMini location={config.location} />
+        {/* Row 2 */}
+        <div className="col-span-2 row-span-2 md-col-span-3 sm-col-span-2">
+          <AboutCard about={siteConfig.about} />
+        </div>
+        <div className="col-span-2 row-span-2 md-col-span-3 sm-col-span-2">
+          <ProjectsCard projects={siteConfig.projects} />
+        </div>
 
-        <AboutSection about={config.about} tags={config.tags} techStack={config.techStack} />
-        <FavoritesSection favorites={config.favorites} />
-        <ProjectsSection projects={config.projects} />
-        <ContactSection contact={config.contact} />
-
-        <footer className="bento-card bento-card--full site-footer">
-          <p className="footer-slogan">{config.slogan}</p>
-          <p className="footer-copy">{config.footer}</p>
-        </footer>
+        {/* Row 3 */}
+        <div className="col-span-2 row-span-1 md-col-span-2 sm-col-span-2">
+          <FavoritesCard favorites={siteConfig.favorites} />
+        </div>
+        <div className="col-span-2 row-span-1 md-col-span-3 sm-col-span-2">
+          <ContactCard contact={siteConfig.contact} />
+        </div>
       </div>
-
-      {contextMenu && (
-        <CustomContextMenu
-          x={contextMenu.x}
-          y={contextMenu.y}
-          isClosing={contextMenu.isClosing}
-          isWeightlessMode={isWeightlessMode}
-          themeMode={themeMode}
-          onToggleWeightless={toggleWeightlessMode}
-          onToggleTheme={toggleThemeMode}
-          onDisableWeightless={disableWeightlessMode}
-          onClose={closeContextMenu}
-        />
-      )}
+      
+      <footer className="text-center text-muted text-sm" style={{ padding: '2rem 0' }}>
+        <p>{siteConfig.slogan}</p>
+        <p style={{ marginTop: '0.5rem', opacity: 0.7 }}>{siteConfig.footer}</p>
+      </footer>
     </div>
   );
 }
+
+export default App;

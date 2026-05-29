@@ -1,0 +1,56 @@
+[2m8:27:56 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to load url /src/styles/index.css (resolved id: C:/Users/Yang Xingran/syyanns-profiles/src/styles/index.css) in C:/Users/Yang Xingran/syyanns-profiles/src/main.jsx. Does the file exist?
+[2m8:32:13 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "./components/HeroOrbitCard" from "src/App.jsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Users/Yang Xingran/syyanns-profiles/src/App.jsx[39m:14:26
+[33m  29 |  import CustomContextMenu from "./components/CustomContextMenu";
+  30 |  import FavoritesSection from "./components/FavoritesSection";
+  31 |  import HeroOrbitCard from "./components/HeroOrbitCard";
+     |                             ^
+  32 |  import ProfileSidebar from "./components/ProfileSidebar";
+  33 |  import ProjectsSection from "./components/ProjectsSection";[39m
+      at TransformPluginContext._formatLog (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42553:41)
+      at TransformPluginContext.error (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42550:16)
+      at normalizeUrl (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40529:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40648:37
+      at async Promise.all (index 9)
+      at async TransformPluginContext.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40575:7)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42348:18)
+      at async loadAndTransform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:35740:27)
+      at async viteTransformMiddleware (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:37264:24)
+[2m8:37:36 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "./components/PrinterLoader" from "src/App.jsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Users/Yang Xingran/syyanns-profiles/src/App.jsx[39m:15:26
+[33m  30 |  import FavoritesSection from "./components/FavoritesSection";
+  31 |  import HeroOrbitCard from "./components/HeroOrbitCard";
+  32 |  import PrinterLoader from "./components/PrinterLoader";
+     |                             ^
+  33 |  import ProfileSidebar from "./components/ProfileSidebar";
+  34 |  import ProjectsSection from "./components/ProjectsSection";[39m
+      at TransformPluginContext._formatLog (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42553:41)
+      at TransformPluginContext.error (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42550:16)
+      at normalizeUrl (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40529:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40648:37
+      at async Promise.all (index 10)
+      at async TransformPluginContext.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40575:7)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42348:18)
+      at async loadAndTransform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:35740:27)
+[2m8:37:36 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "./components/PrinterLoader" from "src/App.jsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Users/Yang Xingran/syyanns-profiles/src/App.jsx[39m:15:26
+[33m  30 |  import FavoritesSection from "./components/FavoritesSection";
+  31 |  import HeroOrbitCard from "./components/HeroOrbitCard";
+  32 |  import PrinterLoader from "./components/PrinterLoader";
+     |                             ^
+  33 |  import ProfileSidebar from "./components/ProfileSidebar";
+  34 |  import ProjectsSection from "./components/ProjectsSection";[39m
+      at TransformPluginContext._formatLog (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42553:41)
+      at TransformPluginContext.error (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42550:16)
+      at normalizeUrl (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40529:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40648:37
+      at async Promise.all (index 10)
+      at async TransformPluginContext.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40575:7)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42348:18)
+      at async loadAndTransform (file:///C:/Users/Yang%20Xingran/syyanns-profiles/node_modules/.pnpm/vite@6.4.2/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:35740:27)
